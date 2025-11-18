@@ -260,7 +260,7 @@ export default function MatchesPage() {
       setError(null);
       
       // Use the live matches endpoint
-      const response = await fetch(`${API_BASE}/matches/live`);
+      const response = await fetch(`${API_BASE}/api/football/matches/live`);
       if (!response.ok) {
         throw new Error('Failed to fetch live matches');
       }
