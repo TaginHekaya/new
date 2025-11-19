@@ -253,61 +253,77 @@ export default function MatchesPage() {
   }, []);
 
   const fetchMatches = async (isBackground = false) => {
-    try {
-      if (!isBackground) {
-        setLoading(true);
-      }
-      setError(null);
-      
-      // Use the live matches endpoint
-      const response = await fetch(`${API_BASE}/api/football/matches/live`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch live matches');
-      }
-      const data = await response.json();
-      setMatches(data);
-      setLastUpdated(new Date());
+  try {
+    if (!isBackground) setLoading(true);
+    setError(null);
 
-      // Check favorite status for all teams if user is logged in
-      if (user && token && data.length > 0) {
-        const allTeamIds = new Set<number>();
-        data.forEach((match: Match) => {
-          if (match.homeTeam?.id) allTeamIds.add(match.homeTeam.id);
-          if (match.awayTeam?.id) allTeamIds.add(match.awayTeam.id);
-        });
+    // Endpoints we want to fetch
+    const endpoints = [
+      `${API_BASE}/api/football/matches/live`,
+      `${API_BASE}/api/football/today`,
+      `${API_BASE}/api/football/yesterday`,
+      `${API_BASE}/api/football/tomorrow`
+    ];
 
-        const favoriteStatuses = await Promise.all(
-          Array.from(allTeamIds).map(async (teamId: number) => {
-            const isFavorite = await checkTeamFavoriteStatus(teamId);
-            return { teamId, isFavorite };
-          })
-        );
+    let allMatches: Match[] = [];
 
-        const newFavoriteTeams = new Set<number>();
-        favoriteStatuses.forEach(({ teamId, isFavorite }) => {
-          if (isFavorite) {
-            newFavoriteTeams.add(teamId);
+    // Fetch from all endpoints
+    for (const url of endpoints) {
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data)) {
+            allMatches = [...allMatches, ...data];
           }
-        });
-        setFavoriteTeams(newFavoriteTeams);
-      }
-      
-      // Show notification for background updates
-      if (isBackground) {
-        setShowUpdateNotification(true);
-        setTimeout(() => setShowUpdateNotification(false), 3000);
-      }
-    } catch (err) {
-      if (!isBackground) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      }
-    } finally {
-      if (!isBackground) {
-        setLoading(false);
+        }
+      } catch (err) {
+        console.log("⚠️ Error fetching:", url);
       }
     }
-  };
 
+    // Save matches
+    setMatches(allMatches);
+    setLastUpdated(new Date());
+
+    // Check favorites
+    if (user && token && allMatches.length > 0) {
+      const allTeamIds = new Set<number>();
+
+      allMatches.forEach((match: Match) => {
+        if (match.homeTeam?.id) allTeamIds.add(match.homeTeam.id);
+        if (match.awayTeam?.id) allTeamIds.add(match.awayTeam.id);
+      });
+
+      const favoriteStatuses = await Promise.all(
+        Array.from(allTeamIds).map(async (teamId: number) => {
+          const isFavorite = await checkTeamFavoriteStatus(teamId);
+          return { teamId, isFavorite };
+        })
+      );
+
+      const newFavoriteTeams = new Set<number>();
+      favoriteStatuses.forEach(({ teamId, isFavorite }) => {
+        if (isFavorite) newFavoriteTeams.add(teamId);
+      });
+
+      setFavoriteTeams(newFavoriteTeams);
+    }
+
+    // Background update popup
+    if (isBackground) {
+      setShowUpdateNotification(true);
+      setTimeout(() => setShowUpdateNotification(false), 3000);
+    }
+  } catch (err) {
+    if (!isBackground) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    }
+  } finally {
+    if (!isBackground) setLoading(false);
+  }
+};
+  
   const fetchMatchDetails = async (matchId: string) => {
     // Only fetch basic match data on modal open
     // Other data will be fetched when specific tabs are clicked
