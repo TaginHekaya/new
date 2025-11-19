@@ -260,8 +260,8 @@ export default function MatchesPage() {
     // Endpoints we want to fetch
     const endpoints = [
       `${API_BASE}/api/football/matches/live`,
-      `${API_BASE}/api/football/today`,
-      `${API_BASE}/api/football/yesterday`,
+      `${API_BASE}/api/matches/today`,
+      `${API_BASE}/api/matches/yesterday?`,
       `${API_BASE}/api/football/tomorrow`
     ];
 
