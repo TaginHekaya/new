@@ -6,7 +6,78 @@ import { API_BASE } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+دالة لتوليد الـ Metadata أوتوماتيك لكل مقال
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  try {
+    const res = await fetch(`${API_BASE}/news/${params.id}`, {
+      cache: 'no-store', // عشان نحصل على أحدث بيانات
+    });
+    
+    if (!res.ok) throw new Error('Failed to fetch article');
+    
+    const newsItem = await res.json();
+    
+    // تحويل الصورة لـ Full URL
+    const imageUrl = absoluteImageForMeta(newsItem.imageUrl);
+    const articleUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mal3abak.com'}/news/${params.id}`;
+    
+    // استخراج وصف قصير (أول 160 حرف)
+    const description = newsItem.content ? newsItem.content.substring(0, 160).trim() + '...' : 'Read the latest football news on Mal3abak';
+    
+    return {
+      title: `${newsItem.title} | Mal3abak`,
+      description: description,
+      openGraph: {
+        title: newsItem.title,
+        description: description,
+        url: articleUrl,
+        siteName: 'Mal3abak - Your Football Stadium',
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: newsItem.title,
+          }
+        ],
+        locale: 'ar_AR',
+        type: 'article',
+        publishedTime: newsItem.publishedAt || newsItem.createdAt,
+        authors: [newsItem.author?.username || 'Mal3abak'],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: newsItem.title,
+        description: description,
+        images: [imageUrl],
+        creator: '@mal3abak1', // غيّر ده لو عندك تويتر
+        site: '@mal3abak',
+      },
+      alternates: {
+        canonical: articleUrl,
+      },
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Article Not Found | Mal3abak',
+      description: 'The article you are looking for does not exist.',
+    };
+  }
+}
 
+// دالة مساعدة لتحويل الصورة لـ Full URL (للـ Meta Tags)
+function absoluteImageForMeta(url: string): string {
+  if (!url) {
+    // صورة افتراضية لو مفيش صورة
+    return `${process.env.NEXT_PUBLIC_BASE_URL || 'https://mal3abak.com'}/og-default.jpg`;
+  }
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE || API_BASE;
+  if (url.startsWith("/")) return `${baseUrl}${url}`;
+  return `${baseUrl}/${url}`;
+}
 type Author = {
   _id: string;
   username: string;
