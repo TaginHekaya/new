@@ -381,8 +381,8 @@ params.append('live', 'true');
 
 // Use backend API instead of direct API call (same filtering as HTML template)
 
-const response = await fetch(`${API_BASE}/api/football/today?${params}`)
-method: 'GET',
+const response = await fetch(`${API_BASE}/api/football/today?${params}`, {
+  method: 'GET',
 
 headers: {
 
