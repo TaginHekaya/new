@@ -1074,4 +1074,4 @@ export default function NewsDetailPage() {
       </div>
     </>
   );
-}
+  }
