@@ -303,6 +303,24 @@ export default function Header() {
           />
         </Link>
       </div>
+      {/* Floating LIVE Button - Mobile Only */}
+  <div className="md:hidden absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+    <Link
+      href="/matches"
+      className="flex items-center gap-1 bg-gradient-to-r from-red-600 to-red-700 
+                 hover:from-red-700 hover:to-red-800
+                 text-white px-3 py-1.5 rounded-full text-[11px] font-bold
+                 shadow-[0_0_12px_rgba(220,38,38,0.6)]
+                 backdrop-blur-md border border-red-400/40
+                 transition-all duration-300 active:scale-95"
+    >
+      <span className="relative flex h-2.5 w-2.5">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white shadow-sm"></span>
+      </span>
+      LIVE
+    </Link>
+  </div>
 
       {/* Desktop Navigation Links */}
       <nav className="hidden md:flex items-center gap-1 lg:gap-2">
