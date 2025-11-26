@@ -191,12 +191,12 @@ export default function Header() {
 
   return (
     <>
-      {/* Floating LIVE Button - Fixed Position */}
-<div className="fixed top-6 left-1/2 -translate-x-1/2 z-[9999] pointer-events-none">
+{/* Floating LIVE Button - Mobile Only */}
+<div className="md:hidden fixed top-20 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
   <Link
     href="/matches"
     className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700
-               text-white px-3 py-1.5 rounded-full text-[12px] font-semibold
+               text-white px-3 py-1.5 rounded-full text-xs font-semibold
                shadow-lg backdrop-blur-xl border border-red-300/30
                transition-all duration-200 pointer-events-auto"
   >
@@ -206,7 +206,7 @@ export default function Header() {
     </span>
     LIVE
   </Link>
-</div
+</div>
       <style jsx global>{`
         .glass-morphism {
           background: rgba(255, 255, 255, 0.1);
