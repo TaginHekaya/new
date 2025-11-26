@@ -161,7 +161,7 @@ export default function NewsPage() {
         
       <Header />
 
-        <main className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
+        <main className="container mx-auto px-4 pt-28 pb-8 max-w-7xl relative z-10">
         <div className="flex items-end justify-between mb-8">
           <div>
               <h1 className={`text-3xl md:text-4xl font-display font-bold sport-text-gradient`}>Latest News</h1>
