@@ -191,12 +191,12 @@ export default function Header() {
 
   return (
     <>
-      {/* Floating LIVE Button - smaller */}
-<div className="fixed top-3 left-1/2 -translate-x-1/2 z-[9999999] pointer-events-auto">
+      {/* Floating LIVE Button - Final Fixed */}
+<div className="fixed top-16 left-1/2 -translate-x-1/2 z-[9999999] pointer-events-auto">
   <Link
     href="/matches"
     className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700
-               text-white px-2.5 py-1 rounded-full text-[12px] font-semibold
+               text-white px-3 py-1.5 rounded-full text-[12px] font-semibold
                shadow-lg backdrop-blur-xl border border-red-300/30
                transition-all duration-200"
   >
