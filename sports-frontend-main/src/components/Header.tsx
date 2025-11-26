@@ -192,12 +192,15 @@ export default function Header() {
     <>
       {/* Floating LIVE Button */}
 <Link
-  href="/live"
-  className="fixed top-5 right-40 z-[9999] flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-extrabold shadow-2xl backdrop-blur-xl border border-red-300/30 transition-all duration-200 animate-pulse"
+  href="/matches"
+  className="fixed top-5 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 
+             bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full 
+             font-bold shadow-xl backdrop-blur-xl border border-red-300/30 
+             transition-all duration-200 animate-pulse"
 >
-  <span className="relative flex h-4 w-4">
+  <span className="relative flex h-3 w-3">
     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75"></span>
-    <span className="relative inline-flex rounded-full h-4 w-4 bg-white"></span>
+    <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
   </span>
   LIVE
 </Link>
