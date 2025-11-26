@@ -6,7 +6,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '@/context/AuthContext';
+
 export default function Header() {
+
   const { theme, toggleTheme } = useTheme();
   const { user, token, loading, login, signup, logout, refresh } = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
