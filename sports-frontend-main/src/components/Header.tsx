@@ -190,13 +190,13 @@ export default function Header() {
 
   return (
     <>
-      {/* Floating LIVE Button */}
+      {/* Floating LIVE Button - Always Visible */}
 <Link
   href="/matches"
-  className="fixed top-5 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 
-             bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full 
-             font-bold shadow-xl backdrop-blur-xl border border-red-300/30 
-             transition-all duration-200 animate-pulse"
+  className="fixed top-4 left-1/2 -translate-x-1/2 z-[99999] 
+             flex items-center gap-2 bg-red-600 hover:bg-red-700 
+             text-white px-4 py-2 rounded-full font-bold shadow-xl 
+             backdrop-blur-xl border border-red-300/30 transition-all duration-200"
 >
   <span className="relative flex h-3 w-3">
     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75"></span>
