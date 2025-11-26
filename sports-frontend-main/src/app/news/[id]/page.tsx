@@ -440,7 +440,7 @@ export default function NewsDetailPage() {
         
         <Header />
 
-        <main className="container mx-auto px-4 pt-28 pb-8 max-w-4xl relative z-10">
+        <main className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
           {/* Breadcrumb Navigation */}
           <nav className="flex items-center gap-2 mb-6 text-sm">
             <Link 
