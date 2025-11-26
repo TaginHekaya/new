@@ -7,11 +7,6 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '@/context/AuthContext';
 
-// لازم يتحط هنا
-if (typeof window !== "undefined") {
-  // nothing
-}
-
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const { user, token, loading, login, signup, logout, refresh } = useAuth();
