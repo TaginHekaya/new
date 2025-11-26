@@ -192,7 +192,7 @@ export default function Header() {
   return (
     <>
 {/* Floating LIVE Button - Mobile Only */}
-<div className="md:hidden fixed top-20 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
+<div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
   <Link
     href="/matches"
     className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700
