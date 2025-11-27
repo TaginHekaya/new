@@ -467,7 +467,7 @@ export default function NewsDetailPage() {
             </div>
             
             <h1 
-              className={`text-3xl sm:text-4xl lg:text-5xl font-bold ${textColor} mb-6 leading-tight ${
+              className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${textColor} mb-6 leading-tight ${
                 isArabic(newsItem.title) ? 'text-right' : 'text-left'
               }`}
               dir={getTextDirection(newsItem.title)}
