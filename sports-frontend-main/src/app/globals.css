@@ -68,6 +68,34 @@ body {
 header {
   position: relative;
   z-index: 50;
-  height: 72px !important;  /* اضبط حسب ارتفاع الهيدر عندك */
+  height: 72px !important;
   overflow: visible !important;
+}
+
+/* ============================
+   FIX NEWS ARTICLE OVERLAY ISSUE
+   ============================ */
+
+.news-article-content {
+  position: relative;
+  z-index: 1;
+}
+
+.news-article-header {
+  position: relative;
+  z-index: 10 !important;
+  margin-bottom: 1rem;
+}
+
+.news-article-image {
+  position: relative;
+  z-index: 5;
+  margin-top: 1rem;
+}
+
+.news-article-reactions {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 20 !important;
 }
