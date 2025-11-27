@@ -191,6 +191,25 @@ export default function Header() {
 
   return (
     <>
+      {/* Floating LIVE Button - Mobile Only */}
+{!isMobileMenuOpen && (
+  <div className="md:hidden absolute top-6 left-1/2 -translate-x-1/2 z-[60] pointer-events-none">
+    <Link
+      href="/matches"
+      className="flex items-center gap-1 bg-gradient-to-r from-red-600 to-red-700
+             hover:from-red-700 hover:to-red-800 text-white px-2.5 py-1
+             rounded-full text-[10px] font-bold shadow-[0_0_20px_rgba(220,38,38,0.4)]
+             backdrop-blur-xl border border-red-400/40 transition-all duration-300
+             pointer-events-auto hover:scale-105 hover:shadow-[0_0_25px_rgba(220,38,38,0.6)]"
+    >
+      <span className="relative flex h-2 w-2">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-white shadow-sm"></span>
+      </span>
+      <span className="tracking-wider">LIVE</span>
+    </Link>
+  </div>
+)}
       <style jsx global>{`
         .glass-morphism {
           background: rgba(255, 255, 255, 0.1);
@@ -302,25 +321,6 @@ export default function Header() {
           />
         </Link>
       </div>
-{/* Floating LIVE Button - Mobile Only */}
-{!isMobileMenuOpen && (
-  <div className="md:hidden absolute top-6 left-1/2 -translate-x-1/2 z-[60] pointer-events-none">
-    <Link
-      href="/matches"
-      className="flex items-center gap-1 bg-gradient-to-r from-red-600 to-red-700
-             hover:from-red-700 hover:to-red-800 text-white px-2.5 py-1
-             rounded-full text-[10px] font-bold shadow-[0_0_20px_rgba(220,38,38,0.4)]
-             backdrop-blur-xl border border-red-400/40 transition-all duration-300
-             pointer-events-auto hover:scale-105 hover:shadow-[0_0_25px_rgba(220,38,38,0.6)]"
-    >
-      <span className="relative flex h-2 w-2">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-white shadow-sm"></span>
-      </span>
-      <span className="tracking-wider">LIVE</span>
-    </Link>
-  </div>
-)}
 
       {/* Desktop Navigation Links */}
       <nav className="hidden md:flex items-center gap-1 lg:gap-2">
