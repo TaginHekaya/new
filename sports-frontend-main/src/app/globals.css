@@ -67,35 +67,23 @@ body {
    ============================ */
 header {
   position: relative;
-  z-index: 50;
+  z-index: 50; /* Enough to stay above content */
   height: 72px !important;
   overflow: visible !important;
 }
 
 /* ============================
-   FIX NEWS ARTICLE OVERLAY ISSUE
+   ⚠️ IMPORTANT
+   REMOVE ALL NEWS ARTICLE FIXES
+   (They were breaking the page)
    ============================ */
 
-.news-article-content {
-  position: relative;
-  z-index: 1;
-}
+/* 
+ ❌ removed:
+ .news-article-content { ... }
+ .news-article-header { ... }
+ .news-article-image { ... }
+ .news-article-reactions { ... }
 
-.news-article-header {
-  position: relative;
-  z-index: 10 !important;
-  margin-bottom: 1rem;
-}
-
-.news-article-image {
-  position: relative;
-  z-index: 5;
-  margin-top: 1rem;
-}
-
-.news-article-reactions {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  z-index: 20 !important;
-}
+ They were overriding Tailwind and breaking layout.
+*/
