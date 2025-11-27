@@ -193,7 +193,7 @@ export default function Header() {
     <> 
       {/* Floating LIVE Button - Mobile Only */}
 {!isMobileMenuOpen && (
-  <div className="md:hidden absolute top-8 left-1/2 -translate-x-1/2 z-[60] pointer-events-none">
+  <div className="md:hidden absolute top-10 left-1/2 -translate-x-1/2 z-[60] pointer-events-none">
     <Link
       href="/matches"
       className="flex items-center gap-1 bg-gradient-to-r from-red-600 to-red-700
