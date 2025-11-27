@@ -290,7 +290,7 @@ export default function Header() {
       `}</style>
       <header className="relative w-full min-h-[110px] flex items-center justify-between px-4 md:px-16 bg-slate-900/95 backdrop-blur-md border-b border-white/10 z-30 pt-4 pb-4">
           {/* Logo Section */}
-      <div className="flex items-center flex-shrink-0">
+      <div className="flex items-center flex-shrink-0 gap-3">
         <Link href="/" className="relative w-[120px] h-[44px] md:w-[173px] md:h-[64px] rounded-[11px] overflow-hidden bg-blur-sm">
           <Image
             src="/logo.png"
