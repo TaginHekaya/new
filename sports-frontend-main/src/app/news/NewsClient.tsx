@@ -170,11 +170,9 @@ function isArabic(text: string): boolean {
 function getTextDirection(text: string): 'ltr' | 'rtl' {
   return isArabic(text) ? 'rtl' : 'ltr';
 }
-
 export default function NewsClient({ newsItem: initialNews }: { newsItem: NewsItem }) {
-  const { theme } = useTheme();
+const { theme } = useTheme();
   const { user, token } = useAuth();
-  const params = useParams();
   const router = useRouter();
   const [newsItem, setNewsItem] = useState<NewsItem | null>(initialNews);
   const [error, setError] = useState<string | null>(null);
@@ -189,17 +187,29 @@ export default function NewsClient({ newsItem: initialNews }: { newsItem: NewsIt
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [commentToDelete, setCommentToDelete] = useState<{id: string, isReply: boolean, parentId?: string} | null>(null);
-// -----------------------------
-// Fetch ONLY comments
-// -----------------------------
-useEffect(() => {
-  if (!initialNews?._id) return;
 
-  fetchCommentsForNews(initialNews._id)
-    .then(setComments)
-    .catch(() => console.error("Failed to load comments"))
-    .finally(() => setCommentsLoading(false));
-}, [initialNews?._id]);
+  // -----------------------------
+  // Sync server data & stop loading
+  // -----------------------------
+  useEffect(() => {
+    if (initialNews) {
+      setNewsItem(initialNews);
+      setLoading(false);
+    }
+  }, [initialNews]);
+
+  // -----------------------------
+  // Fetch ONLY comments
+  // -----------------------------
+  useEffect(() => {
+    if (!initialNews?._id) return;
+
+    fetchCommentsForNews(initialNews._id)
+      .then(setComments)
+      .catch(() => console.error("Failed to load comments"))
+      .finally(() => setCommentsLoading(false));
+
+  }, [initialNews?._id]);
 
   // Close emoji picker when clicking outside
   useEffect(() => {
