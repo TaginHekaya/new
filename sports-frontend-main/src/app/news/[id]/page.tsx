@@ -1,5 +1,4 @@
 // THIS FILE IS SERVER COMPONENT
-import NewsClient from "@/components/news/NewsClient";
 import { API_BASE } from "@/lib/api";
 
 export async function generateMetadata({ params }) {
