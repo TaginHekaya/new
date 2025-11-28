@@ -380,7 +380,7 @@ export default function NewsDetailPage() {
   const textColor = isDark ? 'text-white' : 'text-gray-900';
   const textMuted = isDark ? 'text-slate-300' : 'text-gray-700';
   const textSubtle = isDark ? 'text-slate-400' : 'text-gray-600';
-
+  
   if (!newsItem) {
   return (
     <div className={`min-h-screen ${bgColor}`}>
