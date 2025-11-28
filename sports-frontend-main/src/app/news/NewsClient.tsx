@@ -189,21 +189,17 @@ export default function NewsClient({ newsItem: initialNews }: { newsItem: NewsIt
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [commentToDelete, setCommentToDelete] = useState<{id: string, isReply: boolean, parentId?: string} | null>(null);
+// -----------------------------
+// Fetch ONLY comments
+// -----------------------------
+useEffect(() => {
+  if (!initialNews?._id) return;
 
-  useEffect(() => {
-    if (params.id) {
-      fetchNewsById(params.id as string)
-        .then(setNewsItem)
-        .catch((e) => setError(e?.message || "Failed to load"))
-        .finally(() => setLoading(false));
-
-      // Fetch comments for this news article
-      fetchCommentsForNews(params.id as string)
-        .then(setComments)
-        .catch((e) => console.error("Failed to load comments:", e))
-        .finally(() => setCommentsLoading(false));
-    }
-  }, [params.id]);
+  fetchCommentsForNews(initialNews._id)
+    .then(setComments)
+    .catch(() => console.error("Failed to load comments"))
+    .finally(() => setCommentsLoading(false));
+}, [initialNews?._id]);
 
   // Close emoji picker when clicking outside
   useEffect(() => {
