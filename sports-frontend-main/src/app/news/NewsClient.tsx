@@ -173,6 +173,7 @@ function getTextDirection(text: string): 'ltr' | 'rtl' {
 export default function NewsClient({ newsItem: initialNews }: { newsItem: NewsItem }) {
 const { theme } = useTheme();
   const { user, token } = useAuth();
+  const params = useParams();
   const router = useRouter();
   const [newsItem, setNewsItem] = useState<NewsItem | null>(initialNews);
   const [error, setError] = useState<string | null>(null);
