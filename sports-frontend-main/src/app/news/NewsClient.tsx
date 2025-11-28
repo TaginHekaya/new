@@ -171,12 +171,12 @@ function getTextDirection(text: string): 'ltr' | 'rtl' {
   return isArabic(text) ? 'rtl' : 'ltr';
 }
 
-export default function NewsClient({ newsItem }) {
+export default function NewsClient({ newsItem: initialNews }) {
   const { theme } = useTheme();
   const { user, token } = useAuth();
   const params = useParams();
   const router = useRouter();
-  const [newsItem, setNewsItem] = useState<NewsItem | null>(null);
+  const [newsItem, setNewsItem] = useState<NewsItem | null>(initialNews);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [comments, setComments] = useState<Comment[]>([]);
