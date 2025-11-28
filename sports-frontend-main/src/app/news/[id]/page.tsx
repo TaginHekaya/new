@@ -1,10 +1,25 @@
 // THIS FILE IS SERVER COMPONENT
 import { API_BASE } from "@/lib/api";
+import NewsClient from "@/components/news/NewsClient";
 
-export async function generateMetadata({ params }) {
+// ------------------
+// FIXED: add types
+// ------------------
+interface PageParams {
+  params: {
+    id: string;
+  };
+}
+
+// ------------------
+// SEO + Metadata
+// ------------------
+export async function generateMetadata(
+  { params }: PageParams
+) {
   try {
     const res = await fetch(`${API_BASE}/news/${params.id}`, {
-      cache: "no-store"
+      cache: "no-store",
     });
 
     if (!res.ok) return {};
@@ -21,11 +36,11 @@ export async function generateMetadata({ params }) {
           {
             url: news.imageUrl?.startsWith("http")
               ? news.imageUrl
-              : `${API_BASE}${news.imageUrl}`
-          }
+              : `${API_BASE}${news.imageUrl}`,
+          },
         ],
         url: `https://mal3abak.com/news/${params.id}`,
-        type: "article"
+        type: "article",
       },
       twitter: {
         card: "summary_large_image",
@@ -34,19 +49,21 @@ export async function generateMetadata({ params }) {
         images: [
           news.imageUrl?.startsWith("http")
             ? news.imageUrl
-            : `${API_BASE}${news.imageUrl}`
-        ]
-      }
+            : `${API_BASE}${news.imageUrl}`,
+        ],
+      },
     };
   } catch (e) {
     return {};
   }
 }
 
-export default async function Page({ params }) {
-
+// ------------------
+// PAGE COMPONENT
+// ------------------
+export default async function Page({ params }: PageParams) {
   const res = await fetch(`${API_BASE}/news/${params.id}`, {
-    cache: "no-store"
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -55,5 +72,6 @@ export default async function Page({ params }) {
 
   const news = await res.json();
 
+  // Send news to client component
   return <NewsClient newsItem={news} />;
 }
