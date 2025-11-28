@@ -14,10 +14,10 @@ interface PageParams {
 // ------------------
 // SEO + Metadata
 // ------------------
-export async function generateMetadata(
-  { params }: PageParams
-) {
+export async function generateMetadata({ params }: PageParams) {
   try {
+    console.log("SERVER META FETCH:", `${API_BASE}/news/${params.id}`);
+
     const res = await fetch(`${API_BASE}/news/${params.id}`, {
       cache: "no-store",
     });
@@ -53,7 +53,7 @@ export async function generateMetadata(
         ],
       },
     };
-  } catch (e) {
+  } catch {
     return {};
   }
 }
@@ -62,16 +62,21 @@ export async function generateMetadata(
 // PAGE COMPONENT
 // ------------------
 export default async function Page({ params }: PageParams) {
-  const res = await fetch(`${API_BASE}/news/${params.id}`, {
+  const url = `${API_BASE}/news/${params.id}`;
+
+  // IMPORTANT LOG
+  console.log("SERVER PAGE FETCH:", url);
+
+  const res = await fetch(url, {
     cache: "no-store",
   });
 
   if (!res.ok) {
+    console.log("❌ NEWS NOT FOUND ON SERVER — STATUS:", res.status);
     return <div className="p-10 text-center">Article Not Found</div>;
   }
 
   const news = await res.json();
 
-  // Send news to client component
   return <NewsClient newsItem={news} />;
 }
