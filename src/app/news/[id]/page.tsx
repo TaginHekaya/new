@@ -2,7 +2,8 @@
 import Header from "@/components/Header";
 import { useEffect, useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { API_BASE } from "@/lib/api";
+// import { API_BASE } from "@/lib/api";  // امسح السطر ده
+const API_BASE = "https://api.mal3abak.com";  // ضيف السطر ده
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
