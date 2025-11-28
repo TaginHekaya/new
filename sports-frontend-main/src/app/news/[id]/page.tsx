@@ -1,6 +1,6 @@
 // THIS FILE IS SERVER COMPONENT
 import { API_BASE } from "@/lib/api";
-import NewsClient from "@/components/news/NewsClient";
+import NewsClient from "../NewsClient";
 
 // ------------------
 // FIXED: add types
