@@ -193,9 +193,18 @@ export default function NewsDetailPage() {
 
   useEffect(() => {
     if (params.id) {
+      console.log('Fetching news with ID:', params.id);
+      console.log('API URL:', `https://api.mal3abak.com/news/${params.id}`);
+      
       fetchNewsById(params.id as string)
-        .then(setNewsItem)
-        .catch((e) => setError(e?.message || "Failed to load"))
+        .then((data) => {
+          console.log('News data received:', data);
+          setNewsItem(data);
+        })
+        .catch((e) => {
+          console.error('Error fetching news:', e);
+          setError(e?.message || "Failed to load");
+        })
         .finally(() => setLoading(false));
 
       // Fetch comments for this news article
