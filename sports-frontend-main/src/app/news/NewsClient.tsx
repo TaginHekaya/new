@@ -171,7 +171,7 @@ function getTextDirection(text: string): 'ltr' | 'rtl' {
   return isArabic(text) ? 'rtl' : 'ltr';
 }
 
-export default function NewsClient({ newsItem: initialNews }) {
+export default function NewsClient({ newsItem: initialNews }: { newsItem: NewsItem }) {
   const { theme } = useTheme();
   const { user, token } = useAuth();
   const params = useParams();
