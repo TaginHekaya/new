@@ -1,24 +1,18 @@
-// THIS FILE IS SERVER COMPONENT
+
 import { API_BASE } from "@/lib/api";
 import NewsClient from "./NewsClient";
 
-// ------------------
-// FIXED: add types
-// ------------------
 interface PageParams {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>; // ✅ Changed to Promise
 }
 
-// ------------------
 // SEO + Metadata
-// ------------------
 export async function generateMetadata({ params }: PageParams) {
   try {
-    console.log("SERVER META FETCH:", `${API_BASE}/news/${params.id}`);
+    const { id } = await params; // ✅ Await params
+    console.log("SERVER META FETCH:", `${API_BASE}/news/${id}`);
 
-    const res = await fetch(`${API_BASE}/news/${params.id}`, {
+    const res = await fetch(`${API_BASE}/news/${id}`, {
       cache: "no-store",
     });
 
@@ -39,7 +33,7 @@ export async function generateMetadata({ params }: PageParams) {
               : `${API_BASE}${news.imageUrl}`,
           },
         ],
-        url: `https://mal3abak.com/news/${params.id}`,
+        url: `https://mal3abak.com/news/${id}`,
         type: "article",
       },
       twitter: {
@@ -58,13 +52,11 @@ export async function generateMetadata({ params }: PageParams) {
   }
 }
 
-// ------------------
 // PAGE COMPONENT
-// ------------------
 export default async function Page({ params }: PageParams) {
-  const url = `${API_BASE}/news/${params.id}`;
+  const { id } = await params; // ✅ Await params
+  const url = `${API_BASE}/news/${id}`;
 
-  // IMPORTANT LOG
   console.log("SERVER PAGE FETCH:", url);
 
   const res = await fetch(url, {
