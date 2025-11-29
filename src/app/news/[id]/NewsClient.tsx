@@ -1,12 +1,12 @@
 "use client";
-import Header from "@/components/Header";
+
 import { useEffect, useState } from "react";
-import { useTheme } from "@/contexts/ThemeContext";
-// import { API_BASE } from "@/lib/api";  // امسح السطر ده
-const API_BASE = "https://api.mal3abak.com";  // ضيف السطر ده
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
+import Header from "@/components/Header";
+const API_BASE = "https://api.mal3abak.com";
 
 type Author = {
   _id: string;
@@ -189,7 +189,11 @@ export default function NewsClient({ newsItem }: { newsItem: NewsItem }) {
   const [submittingReply, setSubmittingReply] = useState<boolean>(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [commentToDelete, setCommentToDelete] = useState<{ id: string, isReply: boolean, parentId?: string } | null>(null);
+  const [commentToDelete, setCommentToDelete] = useState<{ 
+    id: string; 
+    isReply: boolean; 
+    parentId?: string 
+  } | null>(null);
 
   // -----------------------------
   // Fetch ONLY comments
@@ -217,12 +221,9 @@ export default function NewsClient({ newsItem }: { newsItem: NewsItem }) {
         setShowEmojiPicker(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showEmojiPicker]);
-}
 
   // Close reply form when user logs out
   useEffect(() => {
@@ -384,21 +385,36 @@ export default function NewsClient({ newsItem }: { newsItem: NewsItem }) {
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="text-center py-16">
           <div className={`w-24 h-24 mx-auto mb-6 ${isDark ? 'text-slate-600' : 'text-gray-400'}`}>
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.709M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={1.5} 
+                d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.709M15 12a3 3 0 11-6 0 3 3 0 016 0z" 
+              />
             </svg>
           </div>
-          <h3 className={`text-xl font-semibold ${textColor} mb-2`}>Article Not Found</h3>
+          
+          <h3 className={`text-xl font-semibold ${textColor} mb-2`}>
+            Article Not Found
+          </h3>
+          
           <p className={`${textMuted} mb-6`}>
-            The news article you're looking for doesn't exist or has been removed.
+            The news article you&apos;re looking for doesn&apos;t exist or has been removed.
           </p>
+          
           <Link 
             href="/news"
-            className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${
+            className={`inline-block px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm border ${
               isDark 
                 ? 'border-slate-600 bg-slate-700 text-white hover:bg-slate-600' 
                 : 'border-gray-300 bg-gray-50 text-gray-900 hover:bg-gray-100'
-            } border`}
+            }`}
           >
             ← Back to News
           </Link>
@@ -406,7 +422,7 @@ export default function NewsClient({ newsItem }: { newsItem: NewsItem }) {
       </main>
     </div>
   );
-}
+  }
 
   return (
     <>
