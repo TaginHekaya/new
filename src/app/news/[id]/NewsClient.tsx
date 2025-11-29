@@ -373,51 +373,38 @@ export default function NewsDetailPage() {
   const textMuted = isDark ? 'text-slate-300' : 'text-gray-700';
   const textSubtle = isDark ? 'text-slate-400' : 'text-gray-600';
   
-  if (!newsItem) {
-  return (
-    <div className={`min-h-screen ${bgColor}`}>
-      <Header />
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="text-center py-16">
-          <div className={`w-24 h-24 mx-auto mb-6 ${isDark ? 'text-slate-600' : 'text-gray-400'}`}>
-            <svg 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+  
+  if (error || !newsItem) {
+    return (
+      <div className={`min-h-screen ${bgColor}`}>
+        <Header />
+        <main className="container mx-auto px-4 py-8 max-w-4xl">
+          <div className="text-center py-16">
+            <div className={`w-24 h-24 mx-auto mb-6 ${isDark ? 'text-slate-600' : 'text-gray-400'}`}>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.709M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <h3 className={`text-xl font-semibold ${textColor} mb-2`}>Article Not Found</h3>
+            <p className={`${textMuted} mb-6`}>
+              The news article you're looking for doesn't exist or has been removed.
+            </p>
+            <Link 
+              href="/news"
+              className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${
+                isDark 
+                  ? 'border-slate-600 bg-slate-700 text-white hover:bg-slate-600' 
+                  : 'border-gray-300 bg-gray-50 text-gray-900 hover:bg-gray-100'
+              } border`}
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={1.5} 
-                d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.709M15 12a3 3 0 11-6 0 3 3 0 016 0z" 
-              />
-            </svg>
+              鈫� Back to News
+            </Link>
           </div>
-          
-          <h3 className={`text-xl font-semibold ${textColor} mb-2`}>
-            Article Not Found
-          </h3>
-          
-          <p className={`${textMuted} mb-6`}>
-            The news article you&apos;re looking for doesn&apos;t exist or has been removed.
-          </p>
-          
-          <Link 
-            href="/news"
-            className={`inline-block px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm border ${
-              isDark 
-                ? 'border-slate-600 bg-slate-700 text-white hover:bg-slate-600' 
-                : 'border-gray-300 bg-gray-50 text-gray-900 hover:bg-gray-100'
-            }`}
-          >
-            ← Back to News
-          </Link>
-        </div>
-      </main>
-    </div>
-  );
+        </main>
+      </div>
+    );
   }
+
 
   return (
     <>
