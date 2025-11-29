@@ -1,12 +1,11 @@
 "use client";
-
+import Header from "@/components/Header";
 import { useEffect, useState } from "react";
+import { useTheme } from "@/contexts/ThemeContext";
+import { API_BASE } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
-import Header from "@/components/Header";
-const API_BASE = "https://api.mal3abak.com";
 
 type Author = {
   _id: string;
@@ -244,7 +243,6 @@ export default function NewsDetailPage() {
     }
   };
 
-
   const handleLikeComment = async (commentId: string) => {
     if (!token) return;
     
@@ -364,7 +362,7 @@ export default function NewsDetailPage() {
   };
 
   // Common emojis for quick access
-  const commonEmojis = ['😀', '😂', '😍', '👍', '👎', '❤️', '🔥', '💯', '🎉', '😊', '😢', '😮', '😡', '🤔', '👏', '🙏'];
+  const commonEmojis = ['馃榾', '馃槀', '馃槏', '馃憤', '馃憥', '鉂わ笍', '馃敟', '馃挴', '馃帀', '馃槉', '馃槩', '馃槷', '馃槨', '馃', '馃憦', '馃檹'];
 
   const isDark = theme === "dark";
   const bgColor = isDark ? 'bg-slate-900' : 'bg-gray-50';
@@ -372,8 +370,23 @@ export default function NewsDetailPage() {
   const textColor = isDark ? 'text-white' : 'text-gray-900';
   const textMuted = isDark ? 'text-slate-300' : 'text-gray-700';
   const textSubtle = isDark ? 'text-slate-400' : 'text-gray-600';
-  
-  
+
+  if (loading) {
+    return (
+      <div className={`min-h-screen ${bgColor}`}>
+        <Header />
+        <main className="container mx-auto px-4 py-8 max-w-4xl">
+          <div className="flex items-center justify-center py-16">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <p className={`text-sm ${textMuted}`}>Loading article...</p>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   if (error || !newsItem) {
     return (
       <div className={`min-h-screen ${bgColor}`}>
@@ -404,7 +417,6 @@ export default function NewsDetailPage() {
       </div>
     );
   }
-
 
   return (
     <>
@@ -607,7 +619,7 @@ export default function NewsDetailPage() {
                     <textarea
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
-                      placeholder="Share your thoughts on this article... 😊"
+                      placeholder="Share your thoughts on this article... 馃槉"
                       className={`w-full p-4 pr-12 rounded-lg border ${
                         isDark ? 'border-slate-600 bg-slate-700 text-white' : 'border-gray-300 bg-white text-gray-900'
                       } focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
@@ -622,7 +634,7 @@ export default function NewsDetailPage() {
                       }`}
                       title="Add emoji"
                     >
-                      <span className="text-lg">😊</span>
+                      <span className="text-lg">馃槉</span>
                     </button>
                   </div>
                   
@@ -814,7 +826,7 @@ export default function NewsDetailPage() {
                               <textarea
                                 value={replyText}
                                 onChange={(e) => setReplyText(e.target.value)}
-                                placeholder="Write a reply... 😊"
+                                placeholder="Write a reply... 馃槉"
                                 className={`w-full p-3 pr-10 rounded-lg border ${
                                   isDark ? 'border-slate-600 bg-slate-800 text-white' : 'border-gray-300 bg-white text-gray-900'
                                 } focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
@@ -829,7 +841,7 @@ export default function NewsDetailPage() {
                                 }`}
                                 title="Add emoji"
                               >
-                                <span className="text-sm">😊</span>
+                                <span className="text-sm">馃槉</span>
                               </button>
                             </div>
                             
@@ -1062,4 +1074,4 @@ export default function NewsDetailPage() {
       </div>
     </>
   );
-        }
+}
