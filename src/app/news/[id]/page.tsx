@@ -26,7 +26,10 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
       };
     }
 
-    const news = await res.json();
+    // حل مشكلة BOM في الميتا أيضاً
+    const text = await res.text();
+    const cleanText = text.replace(/^\uFEFF/, "");
+    const news = JSON.parse(cleanText);
 
     const imageUrl = news.imageUrl?.startsWith("http")
       ? news.imageUrl
@@ -71,7 +74,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   }
 }
 
-// Fetch News (Server-side, may fail)
+// Fetch News (Server-side with BOM Fix)
 async function fetchNewsById(id: string) {
   try {
     const res = await fetch(`${API_BASE}/news/${id}`, {
@@ -81,8 +84,13 @@ async function fetchNewsById(id: string) {
 
     if (!res.ok) return null;
 
-    return await res.json();
-  } catch {
+    // ⛔ مهم: نتجنب كراش JSON.parse بسبب BOM
+    const text = await res.text();
+    const clean = text.replace(/^\uFEFF/, ""); // حذف BOM
+    return JSON.parse(clean);
+
+  } catch (err) {
+    console.error("News Parsing Error:", err);
     return null;
   }
 }
@@ -137,4 +145,4 @@ export default async function NewsPage({ params }: PageParams) {
       <NewsClient id={params.id} initialNews={newsItem} />
     </>
   );
-          }
+}
