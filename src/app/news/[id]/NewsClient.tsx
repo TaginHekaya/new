@@ -173,13 +173,14 @@ function getTextDirection(text: string): 'ltr' | 'rtl' {
   return isArabic(text) ? 'rtl' : 'ltr';
 }
 
-export default function NewsClient({ newsItem }: { newsItem: NewsItem }) {
+export default function NewsDetailPage() {
   const { theme } = useTheme();
   const { user, token } = useAuth();
-
-  // -----------------------------
-  // STATES (Comments only)
-  // -----------------------------
+  const params = useParams();
+  const router = useRouter();
+  const [newsItem, setNewsItem] = useState<NewsItem | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentsLoading, setCommentsLoading] = useState<boolean>(true);
   const [newComment, setNewComment] = useState<string>('');
@@ -189,40 +190,33 @@ export default function NewsClient({ newsItem }: { newsItem: NewsItem }) {
   const [submittingReply, setSubmittingReply] = useState<boolean>(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [commentToDelete, setCommentToDelete] = useState<{ 
-    id: string; 
-    isReply: boolean; 
-    parentId?: string 
-  } | null>(null);
+  const [commentToDelete, setCommentToDelete] = useState<{id: string, isReply: boolean, parentId?: string} | null>(null);
 
-  // -----------------------------
-  // Fetch ONLY comments
-  // -----------------------------
   useEffect(() => {
-    if (!newsItem?._id) return;
+    if (params.id) {
+      fetchNewsById(params.id as string)
+        .then(setNewsItem)
+        .catch((e) => setError(e?.message || "Failed to load"))
+        .finally(() => setLoading(false));
 
-    console.log("Fetching comments for news:", newsItem._id);
+      // Fetch comments for this news article
+      fetchCommentsForNews(params.id as string)
+        .then(setComments)
+        .catch((e) => console.error("Failed to load comments:", e))
+        .finally(() => setCommentsLoading(false));
+    }
+  }, [params.id]);
 
-    fetchCommentsForNews(newsItem._id)
-      .then((data) => {
-        console.log("Comments loaded:", data);
-        setComments(data);
-      })
-      .catch((e) => console.error("Failed to load comments:", e))
-      .finally(() => setCommentsLoading(false));
-  }, [newsItem?._id]);
-
-  // -----------------------------
-  // Close emoji picker
-  // -----------------------------
+  // Close emoji picker when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (showEmojiPicker && !(event.target as Element).closest(".emoji-picker")) {
+      if (showEmojiPicker && !(event.target as Element).closest('.emoji-picker')) {
         setShowEmojiPicker(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showEmojiPicker]);
 
   // Close reply form when user logs out
@@ -249,6 +243,7 @@ export default function NewsClient({ newsItem }: { newsItem: NewsItem }) {
       setSubmittingComment(false);
     }
   };
+
 
   const handleLikeComment = async (commentId: string) => {
     if (!token) return;
