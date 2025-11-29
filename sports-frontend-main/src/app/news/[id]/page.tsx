@@ -1,4 +1,4 @@
-
+export const dynamic = "force-dynamic";
 import { API_BASE } from "@/lib/api";
 import NewsClient from "./NewsClient";
 import type { Metadata } from 'next';
