@@ -170,14 +170,15 @@ function isArabic(text: string): boolean {
 function getTextDirection(text: string): 'ltr' | 'rtl' {
   return isArabic(text) ? 'rtl' : 'ltr';
 }
+
 export default function NewsClient({ newsItem: initialNews }: { newsItem: NewsItem }) {
-const { theme } = useTheme();
+  const { theme } = useTheme();
   const { user, token } = useAuth();
   const params = useParams();
   const router = useRouter();
   const [newsItem, setNewsItem] = useState<NewsItem | null>(initialNews);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false); // ✅ Changed to false
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentsLoading, setCommentsLoading] = useState<boolean>(true);
   const [newComment, setNewComment] = useState<string>('');
@@ -190,12 +191,11 @@ const { theme } = useTheme();
   const [commentToDelete, setCommentToDelete] = useState<{id: string, isReply: boolean, parentId?: string} | null>(null);
 
   // -----------------------------
-  // Sync server data & stop loading
+  // Sync server data
   // -----------------------------
   useEffect(() => {
     if (initialNews) {
       setNewsItem(initialNews);
-      setLoading(false);
     }
   }, [initialNews]);
 
@@ -211,7 +211,6 @@ const { theme } = useTheme();
       .finally(() => setCommentsLoading(false));
 
   }, [initialNews?._id]);
-
   // Close emoji picker when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
