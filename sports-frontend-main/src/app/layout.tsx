@@ -19,14 +19,6 @@ export const metadata: Metadata = {
     "Live football scores, breaking news, match schedules, goals, statistics, transfers, and personalized alerts — all in one place with Mal3abak.",
 
   keywords: [
-    "football",
-    "soccer",
-    "sports",
-    "live scores",
-    "football news",
-    "goals",
-    "matches",
-    "statistics",
     "ملعبك",
     "اخبار كرة القدم",
     "اهداف",
@@ -35,8 +27,16 @@ export const metadata: Metadata = {
     "تشكيلات",
     "انتقالات",
     "اندية العالم",
-    "البث المباشر"
-  ],
+    "البث المباشر",
+    "football",
+    "soccer",
+    "sports",
+    "live scores",
+    "football news",
+    "goals",
+    "matches",
+    "statistics",
+  ]
 
   authors: [{ name: "Mal3abak Team", url: "https://mal3abak.com" }],
   creator: "Mal3abak Team",
