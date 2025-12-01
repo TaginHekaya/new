@@ -130,11 +130,11 @@ export default async function Page({ params }: PageParams) {
 
   // fetch main match + extras in parallel (best-effort)
   const [matchRes, eventsRes, statsRes, lineupsRes] = await Promise.allSettled([
-    fetch(matchUrl, { cache: "no-store" }),
-    fetch(eventsUrl, { cache: "no-store" }),
-    fetch(statsUrl, { cache: "no-store" }),
-    fetch(lineupsRes ? lineupsUrl : lineupsUrl, { cache: "no-store" }),
-  ]);
+  fetch(matchUrl, { cache: "no-store" }),
+  fetch(eventsUrl, { cache: "no-store" }),
+  fetch(statsUrl, { cache: "no-store" }),
+  fetch(lineupsUrl, { cache: "no-store" }),
+]);
 
   if (matchRes.status === "rejected" || (matchRes.status === "fulfilled" && !matchRes.value.ok)) {
     return (
