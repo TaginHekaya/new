@@ -6,63 +6,50 @@ import AuthWrapper from "@/components/AuthWrapper";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 
-// 🌍 الموقع الرسمي — Metadata احترافية
+// 🌍 الموقع الرسمي (metadata عالمي)
 export const metadata: Metadata = {
   metadataBase: new URL("https://mal3abak.com"),
 
   title: {
-    default: "ملعبك — كل أخبار ومباريات كرة القدم في مكان واحد",
-    template: "%s | ملعبك",
+    default: "Mal3abak - All Football News & Matches in One Place",
+    template: "%s | Mal3abak",
   },
 
-  description: 
-    // 🇦🇪 الوصف العربي أولاً
-    "ملعبك — منصتك الشاملة لمتابعة أحدث أخبار كرة القدم، مواعيد المباريات، الأهداف، الملخصات، الإشعارات الفورية، ترتيب الدوريات، انتقالات اللاعبين، وتحليلات لحظة بلحظة… كل ذلك في مكان واحد بتجربة سريعة واحترافية." +
-    " | " +
-    // 🇬🇧 الوصف الإنجليزي ثانياً
-    "Mal3abak — Your complete football platform for breaking news, live scores, match schedules, goals, highlights, instant alerts, league standings, transfers, and real-time updates — all in one powerful experience.",
+  description:
+    "Live football scores, breaking news, match schedules, goals, statistics, transfers, and personalized alerts — all in one place with Mal3abak.",
 
   keywords: [
-    // Arabic Keywords
-    "ملعبك",
     "اخبار كرة القدم",
     "اهداف",
     "مواعيد المباريات",
-    "بث مباشر",
     "ترتيب الدوري",
-    "انتقالات اللاعبين",
-    "تحليلات كرة قدم",
-    "تشكيلات الفرق",
-    "مباريات اليوم",
-    "نتائج المباريات",
-    "فانتازي",
-    
-    // English Keywords
+    "تشكيلات",
+    "انتقالات",
+    "اندية العالم",
+    "البث المباشر"
     "football",
     "soccer",
+    "sports",
     "live scores",
     "football news",
     "goals",
-    "sports",
-    "highlights",
-    "fixtures",
-    "match schedule",
-    "transfers",
-    "league table",
-    "fantasy football",
+    "matches",
+    "statistics",
+    "ملعبك",
   ],
 
   authors: [{ name: "Mal3abak Team", url: "https://mal3abak.com" }],
   creator: "Mal3abak Team",
   publisher: "Mal3abak",
 
+  // 🔥 OG Image — مهم جدًا للسوشيال
   openGraph: {
     type: "website",
     url: "https://mal3abak.com",
-    siteName: "Mal3abak — ملعبك",
-    title: "ملعبك — كل ما يخص كرة القدم في مكان واحد",
+    siteName: "Mal3abak",
+    title: "Mal3abak - Your Football Stadium",
     description:
-      "تابع آخر أخبار كرة القدم، النتائج المباشرة، الأهداف، التحليلات، انتقالات اللاعبين، وتحديثات الدوريات العالمية لحظة بلحظة — مع تجربة سريعة وممتعة.",
+      "Follow the latest football news, match results, goals, leagues, transfers, and live updates from around the world — all in one place.",
     images: [
       {
         url: "/og-main.jpg",
@@ -75,16 +62,18 @@ export const metadata: Metadata = {
     alternateLocale: ["en_US"],
   },
 
+  // 🐦 Twitter (X)
   twitter: {
     card: "summary_large_image",
     site: "@mal3abak",
     creator: "@mal3abak",
-    title: "ملعبك — كل كرة القدم بين يديك",
+    title: "Mal3abak - Your Football Stadium",
     description:
-      "احصل على أحدث أخبار كرة القدم، النتائج الفورية، الأهداف، الإشعارات، والمحتوى المخصص لفرقك ولاعبيك المفضلين — في منصة واحدة.",
+      "Live football scores, news, goals, and personalized alerts — all in one place.",
     images: ["/og-main.jpg"],
   },
 
+  // 🤖 Robots
   robots: {
     index: true,
     follow: true,
@@ -97,16 +86,18 @@ export const metadata: Metadata = {
     },
   },
 
+  // 📱 Mobile viewport
   viewport: {
     width: "device-width",
     initialScale: 1,
     maximumScale: 1,
   },
 
+  // 📦 Additional
   category: "Sports",
 };
 
-// 📱 Mobile viewport
+// 📱 Mobile Scale
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -119,7 +110,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="en">
       <body className="antialiased dark">
 
         <ThemeProvider>
