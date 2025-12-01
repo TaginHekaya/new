@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     "goals",
     "sports",
     "league table",
-    "transfers"
+    "transfers",
   ],
 
   authors: [{ name: "Mal3abak Team", url: "https://mal3abak.com" }],
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
       "تابع آخر أخبار كرة القدم، النتائج المباشرة، الأهداف، التحليلات، انتقالات اللاعبين، وتحديثات الدوريات العالمية لحظة بلحظة — مع تجربة سريعة وممتعة.",
     images: [
       {
-        url: "/og-main.jpg",
+        url: "/og-main-v2.jpg",
         width: 1200,
         height: 630,
         alt: "Mal3abak - Football News & Matches",
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     title: "ملعبك — كل كرة القدم بين يديك",
     description:
       "احصل على أحدث أخبار كرة القدم، النتائج الفورية، الأهداف، الإشعارات، والمحتوى المخصص لفرقك ولاعبيك المفضلين — في منصة واحدة.",
-    images: ["/og-main.jpg"],
+    images: ["/og-main-v2.jpg"],
   },
 
   robots: {
@@ -112,12 +112,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // 👇 مهم جداً!
-    // لغة الموقع: عربي (SEO)
-    // اتجاه الصفحة: LTR (عشان التصميم لا ينهار)
     <html lang="ar" dir="ltr">
       <body className="antialiased dark">
-
         <ThemeProvider>
           <AuthProvider>
             <AuthWrapper>
@@ -126,8 +122,7 @@ export default function RootLayout({
             </AuthWrapper>
           </AuthProvider>
         </ThemeProvider>
-
       </body>
     </html>
   );
-    }
+}
