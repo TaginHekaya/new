@@ -1,180 +1,169 @@
 export const dynamic = "force-dynamic";
+
 import { API_BASE } from "@/lib/api";
 import NewsClient from "./NewsClient";
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 interface PageParams {
   params: { id: string };
 }
 
-// ✅ Helper function to clean and optimize text for SEO
+// Helper function to clean and optimize text for SEO
 function cleanTextForSEO(text: string, maxLength: number = 160): string {
-  if (!text) return '';
-  return text
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, maxLength)
-    .trim();
+  if (!text) return "";
+  return text.replace(/\s+/g, " ").trim().slice(0, maxLength).trim();
 }
 
-// ✅ Helper function to get absolute image URL
+// Helper function to get absolute image URL
 function getAbsoluteImageUrl(imageUrl: string): string {
-  if (!imageUrl) return 'https://mal3abak.com/default-og-image.jpg';
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+  if (!imageUrl) return "https://mal3abak.com/default-og-image.jpg";
+  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
     return imageUrl;
   }
-  return imageUrl.startsWith('/') 
-    ? `${API_BASE}${imageUrl}` 
+  return imageUrl.startsWith("/")
+    ? `${API_BASE}${imageUrl}`
     : `${API_BASE}/${imageUrl}`;
 }
 
-// ✅ POWERFUL SEO Metadata
-export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+// SEO Metadata
+export async function generateMetadata({
+  params,
+}: PageParams): Promise<Metadata> {
   try {
-    const { id } = await params;
+    const { id } = params;
+
     console.log("🔍 SERVER META FETCH:", `${API_BASE}/news/${id}`);
 
     const res = await fetch(`${API_BASE}/news/${id}`, {
       cache: "no-store",
-      next: { revalidate: 60 } // Revalidate every 60 seconds
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {
       return {
-        title: 'Article Not Found | Mal3abak',
-        description: 'The requested article could not be found.',
+        title: "Article Not Found | Mal3abak",
+        description: "The requested article could not be found.",
       };
     }
 
     const news = await res.json();
-    
-    const title = news.title || 'Latest Football News';
+
+    const title = news.title || "Latest Football News";
     const description = cleanTextForSEO(news.content, 160);
     const imageUrl = getAbsoluteImageUrl(news.imageUrl);
     const articleUrl = `https://mal3abak.com/news/${id}`;
     const publishedTime = news.publishedAt || news.createdAt;
     const modifiedTime = news.updatedAt || publishedTime;
-    const authorName = news.author?.username || 'Mal3abak Team';
-    
-    // ✅ Extract keywords from title and content
+    const authorName = news.author?.username || "Mal3abak Team";
+
     const keywords = [
-      'football news',
-      'soccer news',
-      'sports news',
-      'mal3abak',
-      'ملعبك',
-      'أخبار كرة القدم',
-      'أخبار رياضية',
-      title.split(' ').slice(0, 5).join(', ')
-    ].join(', ');
+      "football news",
+      "soccer news",
+      "sports news",
+      "mal3abak",
+      "ملعبك",
+      "أخبار كرة القدم",
+      "أخبار رياضية",
+      title.split(" ").slice(0, 5).join(", "),
+    ].join(", ");
 
     return {
-      // ✅ Basic Metadata
       title: `${title} | Mal3abak`,
       description,
       keywords,
       authors: [{ name: authorName }],
-      creator: 'Mal3abak',
-      publisher: 'Mal3abak',
-      
-      // ✅ Canonical URL
+      creator: "Mal3abak",
+      publisher: "Mal3abak",
+
       alternates: {
         canonical: articleUrl,
       },
-      
-      // ✅ OpenGraph (Facebook, LinkedIn, WhatsApp)
+
       openGraph: {
-        type: 'article',
+        type: "article",
         title,
         description,
         url: articleUrl,
-        siteName: 'Mal3abak - All Football News in One Place',
-        locale: 'ar_EG',
-        alternateLocale: ['en_US'],
+        siteName: "Mal3abak - All Football News in One Place",
+        locale: "ar_EG",
+        alternateLocale: ["en_US"],
         images: [
           {
             url: imageUrl,
             width: 1200,
             height: 630,
             alt: title,
-            type: 'image/jpeg',
+            type: "image/jpeg",
           },
           {
             url: imageUrl,
             width: 800,
             height: 600,
             alt: title,
-          }
+          },
         ],
         publishedTime,
         modifiedTime,
         authors: [authorName],
-        section: 'Sports',
-        tags: ['Football', 'Soccer', 'Sports', 'News', 'ملعبك', 'كرة القدم'],
+        section: "Sports",
+        tags: ["Football", "Soccer", "Sports", "News", "ملعبك", "كرة القدم"],
       },
-      
-      // ✅ Twitter Card (X)
+
       twitter: {
-        card: 'summary_large_image',
-        site: '@mal3abak1',
-        creator: '@mal3abak',
+        card: "summary_large_image",
+        site: "@mal3abak1",
+        creator: "@mal3abak",
         title,
         description,
         images: [imageUrl],
       },
-      
-      // ✅ Robots & Crawling
+
       robots: {
         index: true,
         follow: true,
         googleBot: {
           index: true,
           follow: true,
-          'max-video-preview': -1,
-          'max-image-preview': 'large',
-          'max-snippet': -1,
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": -1,
         },
       },
-      
-      // ✅ Additional Metadata
-      category: 'Sports',
-      
-      // ✅ Verification & Analytics
+
+      category: "Sports",
+
       verification: {
-        google: 'your-google-site-verification-code',
-        // yandex: 'your-yandex-verification',
-        // bing: 'your-bing-verification',
+        google: "your-google-site-verification-code",
       },
-      
-      // ✅ App Links (for mobile apps)
+
       appLinks: {
         web: {
           url: articleUrl,
           should_fallback: true,
         },
       },
-      
-      // ✅ Other important metadata
+
       other: {
-        'article:published_time': publishedTime,
-        'article:modified_time': modifiedTime,
-        'article:author': authorName,
-        'article:section': 'Sports',
-        'article:tag': 'Football, Soccer, Sports',
+        "article:published_time": publishedTime,
+        "article:modified_time": modifiedTime,
+        "article:author": authorName,
+        "article:section": "Sports",
+        "article:tag": "Football, Soccer, Sports",
       },
     };
   } catch (error) {
     console.error("❌ Error generating metadata:", error);
     return {
-      title: 'Mal3abak - All Football News in One Place',
-      description: 'Get the latest football news, match updates, and sports coverage from around the world.',
+      title: "Mal3abak - All Football News in One Place",
+      description:
+        "Get the latest football news, match updates, and sports coverage from around the world.",
     };
   }
 }
 
-// ✅ PAGE COMPONENT
+// PAGE COMPONENT
 export default async function Page({ params }: PageParams) {
-  const { id } = await params;
+  const { id } = params;
   const url = `${API_BASE}/news/${id}`;
 
   console.log("🚀 SERVER PAGE FETCH:", url);
@@ -182,7 +171,7 @@ export default async function Page({ params }: PageParams) {
   try {
     const res = await fetch(url, {
       cache: "no-store",
-      next: { revalidate: 60 }
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {
@@ -196,7 +185,7 @@ export default async function Page({ params }: PageParams) {
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               The article you're looking for doesn't exist or has been removed.
             </p>
-            <a 
+            <a
               href="/news"
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
@@ -208,37 +197,35 @@ export default async function Page({ params }: PageParams) {
     }
 
     const news = await res.json();
-    
-    // ✅ Add JSON-LD structured data
+
     const jsonLd = {
-      '@context': 'https://schema.org',
-      '@type': 'NewsArticle',
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
       headline: news.title,
       description: cleanTextForSEO(news.content, 160),
       image: getAbsoluteImageUrl(news.imageUrl),
       datePublished: news.publishedAt || news.createdAt,
       dateModified: news.updatedAt || news.publishedAt || news.createdAt,
       author: {
-        '@type': 'Person',
-        name: news.author?.username || 'Mal3abak Team',
+        "@type": "Person",
+        name: news.author?.username || "Mal3abak Team",
       },
       publisher: {
-        '@type': 'Organization',
-        name: 'Mal3abak',
+        "@type": "Organization",
+        name: "Mal3abak",
         logo: {
-          '@type': 'ImageObject',
-          url: 'https://mal3abak.com/logo.png',
+          "@type": "ImageObject",
+          url: "https://mal3abak.com/logo.png",
         },
       },
       mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': `https://mal3abak.com/news/${id}`,
+        "@type": "WebPage",
+        "@id": `https://mal3abak.com/news/${id}`,
       },
     };
 
     return (
       <>
-        {/* ✅ JSON-LD Structured Data for Google */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -257,7 +244,7 @@ export default async function Page({ params }: PageParams) {
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             We couldn't load this article. Please try again later.
           </p>
-          <a 
+          <a
             href="/news"
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
@@ -269,23 +256,24 @@ export default async function Page({ params }: PageParams) {
   }
 }
 
-// ✅ Generate static params for better performance (optional)
+// Generate static params for better performance
 export async function generateStaticParams() {
   try {
     const res = await fetch(`${API_BASE}/news?limit=50`, {
-      next: { revalidate: 3600 } // Revalidate every hour
+      next: { revalidate: 3600 },
     });
-    
+
     if (!res.ok) return [];
-    
+
     const news = await res.json();
     const articles = Array.isArray(news) ? news : news.news || [];
-    
+
     return articles.map((article: any) => ({
       id: article._id,
     }));
   } catch {
     return [];
   }
-        }
-export const revalidate = 60; // Revalidate every 60 seconds
+}
+
+export const revalidate = 60;
