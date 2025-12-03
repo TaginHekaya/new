@@ -1,3 +1,4 @@
+
 export const dynamic = "force-dynamic";
 
 import { API_BASE } from "@/lib/api";
@@ -5,16 +6,14 @@ import NewsClient from "./NewsClient";
 import type { Metadata } from "next";
 
 interface PageParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-// Helper function to clean and optimize text for SEO
 function cleanTextForSEO(text: string, maxLength: number = 160): string {
   if (!text) return "";
   return text.replace(/\s+/g, " ").trim().slice(0, maxLength).trim();
 }
 
-// Helper function to get absolute image URL
 function getAbsoluteImageUrl(imageUrl: string): string {
   if (!imageUrl) return "https://mal3abak.com/default-og-image.jpg";
   if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
@@ -25,12 +24,11 @@ function getAbsoluteImageUrl(imageUrl: string): string {
     : `${API_BASE}/${imageUrl}`;
 }
 
-// SEO Metadata
 export async function generateMetadata({
   params,
 }: PageParams): Promise<Metadata> {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     console.log("🔍 SERVER META FETCH:", `${API_BASE}/news/${id}`);
 
@@ -161,9 +159,8 @@ export async function generateMetadata({
   }
 }
 
-// PAGE COMPONENT
 export default async function Page({ params }: PageParams) {
-  const { id } = params;
+  const { id } = await params;
   const url = `${API_BASE}/news/${id}`;
 
   console.log("🚀 SERVER PAGE FETCH:", url);
@@ -256,7 +253,6 @@ export default async function Page({ params }: PageParams) {
   }
 }
 
-// Generate static params for better performance
 export async function generateStaticParams() {
   try {
     const res = await fetch(`${API_BASE}/news?limit=50`, {
