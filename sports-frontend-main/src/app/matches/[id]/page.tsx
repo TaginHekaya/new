@@ -1,4 +1,4 @@
-// sports-frontend-main/src/app/matches/[id]/page.tsx
+
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
@@ -37,13 +37,11 @@ type MatchApi = {
     name?: string;
     country?: string;
   };
-  // optional fields from DB
   events?: any[];
   statistics?: any;
   lineups?: any;
 };
 
-// Helper - safe absolute image URL for OG & logos
 function getAbsoluteImageUrl(imageUrl?: string) {
   const fallback = `${API_BASE}/default-team.png`;
   if (!imageUrl) return fallback;
@@ -57,9 +55,8 @@ function cleanText(str?: string, max = 160) {
   return str.replace(/\s+/g, " ").trim().slice(0, max);
 }
 
-// ---------- Metadata generator ----------
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
-  const { id } = await params;  // أضف await هنا
+  const { id } = await params;
   try {
     const res = await fetch(`${API_BASE}/api/matches/${id}`, { cache: "no-store" });
     if (!res.ok) {
@@ -77,7 +74,6 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
       : `Match on ${new Date(match.date || "").toLocaleString()}: ${match.homeTeam.name} vs ${match.awayTeam.name}.`;
 
     const image = match.homeTeam?.logo ? getAbsoluteImageUrl(match.homeTeam.logo) : getAbsoluteImageUrl(match.awayTeam?.logo);
-
     const canonical = `https://mal3abak.com/matches/${id}`;
 
     return {
@@ -118,23 +114,19 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   }
 }
 
-// ---------- Page (server) ----------
 export default async function Page({ params }: PageParams) {
-  const { id } = params;
+  const { id } = await params;
   const matchUrl = `${API_BASE}/api/matches/${id}`;
-
-  // multiple endpoints
   const eventsUrl = `${API_BASE}/api/football/events/${id}`;
   const statsUrl = `${API_BASE}/api/football/statistics/${id}`;
   const lineupsUrl = `${API_BASE}/api/football/lineups/${id}`;
 
-  // fetch main match + extras in parallel (best-effort)
   const [matchRes, eventsRes, statsRes, lineupsRes] = await Promise.allSettled([
-  fetch(matchUrl, { cache: "no-store" }),
-  fetch(eventsUrl, { cache: "no-store" }),
-  fetch(statsUrl, { cache: "no-store" }),
-  fetch(lineupsUrl, { cache: "no-store" }),
-]);
+    fetch(matchUrl, { cache: "no-store" }),
+    fetch(eventsUrl, { cache: "no-store" }),
+    fetch(statsUrl, { cache: "no-store" }),
+    fetch(lineupsUrl, { cache: "no-store" }),
+  ]);
 
   if (matchRes.status === "rejected" || (matchRes.status === "fulfilled" && !matchRes.value.ok)) {
     return (
@@ -150,13 +142,10 @@ export default async function Page({ params }: PageParams) {
   }
 
   const matchData: MatchApi = (await (matchRes as PromiseFulfilledResult<Response>).value.json()) as MatchApi;
-
-  // parse extras
   const events = (eventsRes.status === "fulfilled" && eventsRes.value.ok) ? await eventsRes.value.json() : [];
   const statistics = (statsRes.status === "fulfilled" && statsRes.value.ok) ? await statsRes.value.json() : null;
   const lineups = (lineupsRes.status === "fulfilled" && lineupsRes.value.ok) ? await lineupsRes.value.json() : null;
 
-  // JSON-LD structured data for SportsEvent
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
@@ -174,13 +163,11 @@ export default async function Page({ params }: PageParams) {
     url: `https://mal3abak.com/matches/${id}`,
   };
 
-  // Some derived text for page header
   const pageTitle = `${matchData.homeTeam.name} vs ${matchData.awayTeam.name}`;
   const scoreText = `${matchData.scoreA ?? 0} - ${matchData.scoreB ?? 0}`;
   const statusText = matchData.isLive ? (matchData.minute ? `${matchData.minute}'` : "LIVE") : (matchData.status || "Scheduled");
   const ogImage = matchData.homeTeam.logo ? getAbsoluteImageUrl(matchData.homeTeam.logo) : getAbsoluteImageUrl(matchData.awayTeam.logo);
 
-  // Render server-side HTML
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -222,9 +209,7 @@ export default async function Page({ params }: PageParams) {
             </div>
           </div>
 
-          {/* Main layout: left details (events), right stats/lineups */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left: Events */}
             <section className="lg:col-span-2 space-y-4">
               <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm border">
                 <div className="flex items-center justify-between mb-2">
@@ -252,7 +237,6 @@ export default async function Page({ params }: PageParams) {
                 )}
               </div>
 
-              {/* Lineups */}
               <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm border">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-semibold">Lineups</h2>
@@ -281,16 +265,13 @@ export default async function Page({ params }: PageParams) {
               </div>
             </section>
 
-            {/* Right column: Stats & share */}
             <aside className="space-y-4">
-              {/* Quick Stats */}
               <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm border">
                 <h3 className="font-semibold mb-2">Match Statistics</h3>
                 {!statistics ? (
                   <div className="text-sm text-gray-500">Statistics not available.</div>
                 ) : (
                   <div className="space-y-2 text-sm">
-                    {/* Render a few common stats if present */}
                     {statistics.ballPossession && (
                       <div className="flex justify-between">
                         <div className="text-xs">{matchData.homeTeam.name}</div>
@@ -305,7 +286,6 @@ export default async function Page({ params }: PageParams) {
                         <div className="text-xs">{statistics.shots?.away ?? "-"}</div>
                       </div>
                     )}
-                    {/* Generic key/values fallback */}
                     {statistics && !statistics.ballPossession && !statistics.shots && (
                       <pre className="text-xs text-gray-500 overflow-auto max-h-40">{JSON.stringify(statistics, null, 2)}</pre>
                     )}
@@ -313,7 +293,6 @@ export default async function Page({ params }: PageParams) {
                 )}
               </div>
 
-              {/* Share / OG preview */}
               <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm border text-center">
                 <img src={ogImage} alt="team" className="w-full h-28 object-contain mb-3 rounded" />
                 <div className="text-sm font-medium">{pageTitle}</div>
@@ -338,7 +317,6 @@ export default async function Page({ params }: PageParams) {
                 </div>
               </div>
 
-              {/* Quick links */}
               <div className="bg-white dark:bg-slate-800 p-3 rounded-lg shadow-sm border text-sm">
                 <div className="mb-2 font-medium">Quick links</div>
                 <ul className="text-xs space-y-1">
