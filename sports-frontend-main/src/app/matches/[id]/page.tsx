@@ -59,7 +59,7 @@ function cleanText(str?: string, max = 160) {
 
 // ---------- Metadata generator ----------
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;  // أضف await هنا
   try {
     const res = await fetch(`${API_BASE}/api/matches/${id}`, { cache: "no-store" });
     if (!res.ok) {
