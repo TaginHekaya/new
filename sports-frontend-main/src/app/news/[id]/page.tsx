@@ -4,7 +4,7 @@ import NewsClient from "./NewsClient";
 import type { Metadata } from 'next';
 
 interface PageParams {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 // ✅ Helper function to clean and optimize text for SEO
