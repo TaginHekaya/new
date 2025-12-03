@@ -9,9 +9,9 @@ import Header from "@/components/Header";
 import FooterGate from "@/components/FooterGate";
 
 interface PageParams {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 type TeamInfo = {
