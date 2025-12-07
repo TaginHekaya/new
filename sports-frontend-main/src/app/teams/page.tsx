@@ -4,6 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { API_BASE, addToFavorites, removeFromFavorites, checkFavoriteStatus, addPlayerToFavorites, removePlayerFromFavorites, checkPlayerFavoriteStatus } from "@/lib/api";
+import Head from "next/head";
+
+// SEO Configuration - Force Static Generation
+export const dynamic = "force-static";
+export const revalidate = 3600; // Revalidate every hour
 
 type League = {
   _id: string;
@@ -29,21 +34,30 @@ type Team = {
 };
 
 async function fetchLeaguesClient(): Promise<League[]> {
-  const res = await fetch(`${API_BASE}/tournaments`);
+  const res = await fetch(`${API_BASE}/tournaments`, {
+    next: { revalidate: 3600 },
+    cache: "force-cache"
+  });
   if (!res.ok) throw new Error("Failed to load leagues");
   const data = await res.json();
   return data || [];
 }
 
 async function fetchTeamsClient(leagueId: number, season: number): Promise<Team[]> {
-  const res = await fetch(`${API_BASE}/api/football/teams/${leagueId}/${season}`);
+  const res = await fetch(`${API_BASE}/api/football/teams/${leagueId}/${season}`, {
+    next: { revalidate: 3600 },
+    cache: "force-cache"
+  });
   if (!res.ok) throw new Error("Failed to load teams");
   const data = await res.json();
   return data || [];
 }
 
 async function fetchTeamPlayersClient(teamId: number, season: number): Promise<any[]> {
-  const res = await fetch(`${API_BASE}/api/football/teams/${teamId}/players/${season}`);
+  const res = await fetch(`${API_BASE}/api/football/teams/${teamId}/players/${season}`, {
+    next: { revalidate: 3600 },
+    cache: "force-cache"
+  });
   if (!res.ok) throw new Error("Failed to load team players");
   const data = await res.json();
   return data || [];
@@ -83,7 +97,6 @@ export default function TeamsPage() {
         
         if (!isMounted) return;
         
-        // Popular league names to prioritize
         const popularLeagueNames = [
           'Premier League', 'Serie A', 'LaLiga', 'Ligue 1', 'Bundesliga',
           'Liga Portugal', 'Liga Profesional', 'Serie A',
@@ -98,7 +111,6 @@ export default function TeamsPage() {
           'Persian Gulf Pro League', 'Serie B'
         ];
         
-        // Prioritize popular leagues first, then Egypt leagues, then others
         const popularLeagues = fetchedLeagues.filter(league => 
           popularLeagueNames.some(popularName => 
             popularName && league.name.toLowerCase().includes(popularName.toLowerCase())
@@ -124,7 +136,6 @@ export default function TeamsPage() {
         const prioritizedLeagues = [...popularLeagues, ...egyptLeagues, ...otherLeagues];
         setLeagues(prioritizedLeagues);
         
-        // Auto-load Premier League teams when page opens
         const premierLeague = prioritizedLeagues.find(league => 
           league.name.toLowerCase().includes('premier league') && 
           league.country.toLowerCase().includes('england')
@@ -162,7 +173,6 @@ export default function TeamsPage() {
       console.log(`✅ Received ${fetchedTeams.length} teams`);
       setTeams(fetchedTeams);
 
-      // Check favorite status for all teams if user is logged in
       if (user && token) {
         const favoriteStatuses = await Promise.all(
           fetchedTeams.map(async (team) => {
@@ -198,7 +208,6 @@ export default function TeamsPage() {
       const players = await fetchTeamPlayersClient(team.id, selectedSeason);
       console.log(`✅ Received ${players.length} players for ${team.name}`);
       
-      // Transform API response to match expected format
       const transformedPlayers = players.map((playerData: any) => {
         const player = playerData.player;
         const stats = playerData.statistics?.[0] || {};
@@ -237,7 +246,6 @@ export default function TeamsPage() {
       
       setTeamPlayers(transformedPlayers);
       
-      // Check favorite status for all players if user is logged in
       if (user && token && transformedPlayers.length > 0) {
         const favoriteStatuses = await Promise.all(
           transformedPlayers.map(async (player: any) => {
@@ -266,7 +274,7 @@ export default function TeamsPage() {
   };
 
   const toggleFavorite = async (team: Team, event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevent team click
+    event.stopPropagation();
     
     if (!user || !token) {
       setError("Please log in to add teams to favorites");
@@ -280,7 +288,6 @@ export default function TeamsPage() {
       const isFavorite = favoriteTeams.has(teamId);
       
       if (isFavorite) {
-        // Remove from favorites
         await removeFromFavorites(teamId, token);
         setFavoriteTeams(prev => {
           const newSet = new Set(prev);
@@ -288,7 +295,6 @@ export default function TeamsPage() {
           return newSet;
         });
       } else {
-        // Add to favorites
         await addToFavorites(
           teamId,
           team.name,
@@ -312,7 +318,7 @@ export default function TeamsPage() {
   };
 
   const togglePlayerFavorite = async (player: any, event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevent player click
+    event.stopPropagation();
     
     if (!user || !token) {
       setError("Please log in to add players to favorites");
@@ -326,7 +332,6 @@ export default function TeamsPage() {
       const isFavorite = favoritePlayers.has(playerId);
       
       if (isFavorite) {
-        // Remove from favorites
         await removePlayerFromFavorites(playerId, token);
         setFavoritePlayers(prev => {
           const newSet = new Set(prev);
@@ -334,7 +339,6 @@ export default function TeamsPage() {
           return newSet;
         });
       } else {
-        // Add to favorites
         await addPlayerToFavorites(
           playerId,
           player.name,
@@ -385,7 +389,6 @@ export default function TeamsPage() {
     );
   }, [teams, searchQuery]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isLeagueDropdownOpen) {
@@ -402,7 +405,6 @@ export default function TeamsPage() {
     };
   }, [isLeagueDropdownOpen]);
 
-  // Country code mapping for flags
   const getCountryCode = (countryName: string): string => {
     const normalizedName = countryName.trim().toLowerCase();
     
@@ -470,7 +472,6 @@ export default function TeamsPage() {
     return 'un';
   };
 
-  // Theme-based styling
   const isDark = theme === "dark";
   const bgColor = isDark ? 'bg-slate-900' : 'bg-gray-50';
   const cardBg = isDark ? 'bg-slate-800' : 'bg-white';
@@ -480,6 +481,47 @@ export default function TeamsPage() {
 
   return (
     <>
+      <Head>
+        <title>جميع فرق كرة القدم — الدوريات العالمية | ملعبك</title>
+        <meta name="description" content="استكشف جميع فرق كرة القدم من مختلف الدوريات حول العالم، مع تفاصيل الموسم، التأسيس، السعة الجماهيرية، والشعارات. تحديثات مستمرة لجميع الدوريات." />
+        <meta name="keywords" content="فرق كرة القدم, فرق الدوري الإنجليزي, فرق الدوري الإسباني, فرق الدوريات العالمية, Football Teams, Premier League Teams, LaLiga Teams, ملعبك فرق" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="جميع فرق كرة القدم — اكتشف فرق الدوريات العالمية | ملعبك" />
+        <meta property="og:description" content="قائمة كاملة ومحدثة لجميع فرق كرة القدم في أهم الدوريات العالمية. تعرف على التأسيس، السعة، اللاعبين، الموسم الحالي والمزيد." />
+        <meta property="og:url" content="https://mal3abak.com/teams" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://mal3abak.com/og-main-v2.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="Mal3abak" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="جميع فرق كرة القدم — الدوريات العالمية | ملعبك" />
+        <meta name="twitter:description" content="استكشف جميع فرق كرة القدم من مختلف الدوريات حول العالم" />
+        <meta name="twitter:image" content="https://mal3abak.com/og-main-v2.jpg" />
+        
+        {/* Schema.org Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "جميع فرق كرة القدم",
+            "description": "قائمة لجميع فرق كرة القدم من الدوريات العالمية مع معلومات موسمية وتاريخية.",
+            "url": "https://mal3abak.com/teams",
+            "inLanguage": "ar",
+            "isPartOf": {
+              "@type": "WebSite",
+              "name": "Mal3abak",
+              "url": "https://mal3abak.com"
+            }
+          })}
+        </script>
+        
+        <link rel="canonical" href="https://mal3abak.com/teams" />
+      </Head>
+
       <style jsx global>{`
         .team-card:hover {
           transform: translateY(-2px);
@@ -536,6 +578,7 @@ export default function TeamsPage() {
           -webkit-text-fill-color: transparent;
           background-clip: text;
         }
+        
         
         .scrollbar-thin {
           scrollbar-width: thin;
