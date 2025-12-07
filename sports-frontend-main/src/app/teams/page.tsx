@@ -7,9 +7,7 @@ import { API_BASE, addToFavorites, removeFromFavorites, checkFavoriteStatus, add
 import Head from "next/head";
 
 // SEO Configuration - Force Static Generation
-export const dynamic = "force-static";
-export const revalidate = 3600; // Revalidate every hour
-
+export const dynamic = "force-dynamic";
 type League = {
   _id: string;
   name: string;
