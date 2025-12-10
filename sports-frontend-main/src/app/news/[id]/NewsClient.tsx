@@ -39,10 +39,11 @@ type Comment = {
 };
 
 async function fetchNewsById(id: string): Promise<NewsItem> {
-  const res = await fetch(`${API_BASE}/api/news/${id}`);
+  const res = await fetch(`${API_BASE}/news/${id}`);
   if (!res.ok) throw new Error("Failed to load news article");
-  const data = await res.json();
-  return data.data; // السيرفر يرجع { success, data } لازم نأخذ data
+
+  const json = await res.json();
+  return json.data;   // ← الحل السحري
 }
 
 // Fetch comments for a news article
