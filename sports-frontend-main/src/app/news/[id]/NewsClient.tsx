@@ -43,7 +43,12 @@ async function fetchNewsById(id: string): Promise<NewsItem> {
   if (!res.ok) throw new Error("Failed to load news article");
 
   const json = await res.json();
-  return json.data;   // ← الحل السحري
+  
+  // ✅ Handle both formats
+  if (json.success && json.data) {
+    return json.data;  // New format: { success: true, data: {...} }
+  }
+  return json;  // Old format: {...}
 }
 
 // Fetch comments for a news article
