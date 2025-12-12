@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import "./globals.css";
 import FooterGate from "@/components/FooterGate";
@@ -6,7 +7,9 @@ import AuthWrapper from "@/components/AuthWrapper";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 
-// 🌍 Metadata عالمية + عربية SEO محترفة
+/* =========================
+   🌍 Global SEO Metadata
+========================= */
 export const metadata: Metadata = {
   metadataBase: new URL("https://mal3abak.com"),
 
@@ -16,32 +19,23 @@ export const metadata: Metadata = {
   },
 
   description:
-    "ملعبك — منصتك الشاملة لمتابعة أحدث أخبار كرة القدم، مواعيد المباريات، الأهداف، الملخصات، الإشعارات الفورية، ترتيب الدوريات، انتقالات اللاعبين، وتحليلات لحظة بلحظة… كل ذلك في مكان واحد بتجربة سريعة واحترافية." +
-    " | " +
-    "Mal3abak — Your complete football platform for breaking news, live scores, match schedules, goals, highlights, instant alerts, league standings, transfers, and real-time updates — all in one powerful experience.",
+    "ملعبك — منصتك الشاملة لمتابعة أحدث أخبار كرة القدم، مواعيد المباريات، الأهداف، الملخصات، الإشعارات الفورية، ترتيب الدوريات، انتقالات اللاعبين، وتحليلات لحظة بلحظة — كل ذلك في مكان واحد بتجربة سريعة واحترافية.",
 
   keywords: [
     "ملعبك",
     "اخبار كرة القدم",
-    "اهداف",
     "مباريات اليوم",
-    "بث مباشر",
-    "مواعيد المباريات",
+    "اهداف",
     "نتائج المباريات",
-    "انتقالات اللاعبين",
-    "تحليلات كرة قدم",
     "ترتيب الدوري",
-    "تشكيلات الفرق",
-    "فانتازي",
+    "انتقالات اللاعبين",
+    "كرة القدم",
     "football",
     "soccer",
-    "live scores",
     "football news",
+    "live scores",
     "highlights",
     "fixtures",
-    "goals",
-    "sports",
-    "league table",
     "transfers",
   ],
 
@@ -55,13 +49,13 @@ export const metadata: Metadata = {
     siteName: "Mal3abak — ملعبك",
     title: "ملعبك — كل ما يخص كرة القدم في مكان واحد",
     description:
-      "تابع آخر أخبار كرة القدم، النتائج المباشرة، الأهداف، التحليلات، انتقالات اللاعبين، وتحديثات الدوريات العالمية لحظة بلحظة — مع تجربة سريعة وممتعة.",
+      "تابع آخر أخبار كرة القدم، النتائج المباشرة، الأهداف، التحليلات، انتقالات اللاعبين، وتحديثات الدوريات العالمية لحظة بلحظة.",
     images: [
       {
         url: "/og-main-v2.jpg",
         width: 1200,
         height: 630,
-        alt: "Mal3abak - Football News & Matches",
+        alt: "Mal3abak - Football News",
       },
     ],
     locale: "ar_EG",
@@ -70,11 +64,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    site: "@mal3abak",
-    creator: "@mal3abak",
     title: "ملعبك — كل كرة القدم بين يديك",
     description:
-      "احصل على أحدث أخبار كرة القدم، النتائج الفورية، الأهداف، الإشعارات، والمحتوى المخصص لفرقك ولاعبيك المفضلين — في منصة واحدة.",
+      "أخبار كرة القدم، نتائج مباشرة، أهداف، انتقالات وتحليلات — منصة واحدة لكل عشاق الكرة.",
     images: ["/og-main-v2.jpg"],
   },
 
@@ -90,22 +82,21 @@ export const metadata: Metadata = {
     },
   },
 
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
-
   category: "Sports",
 };
 
-// 📱 Mobile viewport
+/* =========================
+   📱 Viewport
+========================= */
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
 };
 
+/* =========================
+   🧱 Root Layout
+========================= */
 export default function RootLayout({
   children,
 }: {
@@ -113,6 +104,46 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="ltr">
+      <head>
+        {/* =========================
+           🔐 Google Consent Mode v2
+        ========================= */}
+        <Script id="google-consent" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+
+            gtag('consent', 'default', {
+              ad_storage: 'granted',
+              analytics_storage: 'granted',
+              functionality_storage: 'granted',
+              personalization_storage: 'granted',
+              security_storage: 'granted'
+            });
+          `}
+        </Script>
+
+        {/* =========================
+           📊 Google Analytics (GA4)
+        ========================= */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-Y5X96FD8WJ"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Y5X96FD8WJ', {
+              anonymize_ip: true,
+              send_page_view: true
+            });
+          `}
+        </Script>
+      </head>
+
       <body className="antialiased dark">
         <ThemeProvider>
           <AuthProvider>
