@@ -1,21 +1,29 @@
+export const metadata = {
+  title: "FAQs | Mal3abak",
+};
+
+const faqs = [
+  { q: "ما هو Mal3abak؟", a: "منصة لعرض أخبار ومباريات كرة القدم في مكان واحد." },
+  { q: "هل الخدمة مجانية؟", a: "الاطلاع على المحتوى متاح، وقد تتغير بعض المزايا حسب التحديثات." },
+  { q: "كيف أتواصل مع الدعم؟", a: "من صفحة تواصل معنا أو عبر البريد المخصص للدعم." },
+];
+
 export default function FAQsPage() {
   return (
-    <main className="container mx-auto p-6">
+    <main className="mx-auto max-w-4xl p-6">
       <h1 className="text-2xl font-bold mb-4">الأسئلة الشائعة</h1>
-      <section className="space-y-4">
-        <div>
-          <h2 className="font-semibold">ما هي منصة ملعبك؟</h2>
-          <p>
-            منصة رياضية لعرض أخبار ومباريات كرة القدم وتحديث النتائج أولاً بأول.
-          </p>
-        </div>
-        <div>
-          <h2 className="font-semibold">كيف أتابع المباريات المفضلة؟</h2>
-          <p>
-            يمكنك إنشاء حساب وتفعيل الإشعارات لفرقك وبطولاتك المفضلة.
-          </p>
-        </div>
-      </section>
+
+      <div className="space-y-4">
+        {faqs.map((item) => (
+          <details
+            key={item.q}
+            className="rounded-lg border border-white/10 bg-white/5 p-4"
+          >
+            <summary className="cursor-pointer font-semibold">{item.q}</summary>
+            <p className="mt-2 text-white/80">{item.a}</p>
+          </details>
+        ))}
+      </div>
     </main>
   );
 }
