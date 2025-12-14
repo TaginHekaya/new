@@ -22,13 +22,14 @@ export default function ContactPage() {
     };
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("https://api.mal3abak.com/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!res.ok) throw new Error("Failed");
+
       setDone("تم إرسال رسالتك بنجاح. هنرد عليك في أقرب وقت.");
       (e.target as HTMLFormElement).reset();
     } catch {
@@ -45,11 +46,36 @@ export default function ContactPage() {
         اكتب لنا اقتراحك أو مشكلتك، وسيتم الرد في أقرب وقت.
       </p>
 
-      <form onSubmit={onSubmit} className="space-y-4 rounded-lg border border-white/10 bg-white/5 p-4">
-        <input name="name" required placeholder="الاسم" className="w-full rounded-md bg-black/20 border border-white/10 p-3" />
-        <input name="email" type="email" required placeholder="البريد الإلكتروني" className="w-full rounded-md bg-black/20 border border-white/10 p-3" />
-        <input name="subject" required placeholder="عنوان الرسالة" className="w-full rounded-md bg-black/20 border border-white/10 p-3" />
-        <textarea name="message" required placeholder="اكتب رسالتك..." rows={5} className="w-full rounded-md bg-black/20 border border-white/10 p-3" />
+      <form
+        onSubmit={onSubmit}
+        className="space-y-4 rounded-lg border border-white/10 bg-white/5 p-4"
+      >
+        <input
+          name="name"
+          required
+          placeholder="الاسم"
+          className="w-full rounded-md bg-black/20 border border-white/10 p-3"
+        />
+        <input
+          name="email"
+          type="email"
+          required
+          placeholder="البريد الإلكتروني"
+          className="w-full rounded-md bg-black/20 border border-white/10 p-3"
+        />
+        <input
+          name="subject"
+          required
+          placeholder="عنوان الرسالة"
+          className="w-full rounded-md bg-black/20 border border-white/10 p-3"
+        />
+        <textarea
+          name="message"
+          required
+          placeholder="اكتب رسالتك..."
+          rows={5}
+          className="w-full rounded-md bg-black/20 border border-white/10 p-3"
+        />
 
         <button
           type="submit"
@@ -68,4 +94,4 @@ export default function ContactPage() {
       </div>
     </main>
   );
-}
+        }
