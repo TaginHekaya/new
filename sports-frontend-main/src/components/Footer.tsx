@@ -43,9 +43,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/champions" className="text-slate-300 hover:text-blue-400 transition-colors duration-200 text-sm">
-                  Champions
-                </Link>
+                <Link href="/leagues" className="text-slate-300 hover:text-blue-400 transition-colors duration-200 text-sm">
+                Champions
+               </Link>
               </li>
             </ul>
           </div>
