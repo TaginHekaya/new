@@ -1,15 +1,21 @@
+export const metadata = {
+  title: "Terms & Conditions | Mal3abak",
+};
+
 export default function TermsPage() {
   return (
-    <main className="container mx-auto p-6">
+    <main className="mx-auto max-w-4xl p-6">
       <h1 className="text-2xl font-bold mb-4">الشروط والأحكام</h1>
-      <p className="mb-2">
-        استخدامك لمنصة ملعبك يعني موافقتك على هذه الشروط والأحكام.
-      </p>
-      <ul className="list-disc ps-6 space-y-2">
-        <li>الخدمة مخصصة للاستخدام الشخصي وغير التجاري.</li>
-        <li>يلتزم المستخدم بعدم إساءة استخدام المنصة أو محاولة اختراقها.</li>
-        <li>قد نقوم بتحديث هذه الشروط من وقت لآخر بما يتناسب مع سياساتنا.</li>
-      </ul>
+
+      <div className="space-y-3 text-white/80">
+        <p>باستخدامك للموقع فأنت توافق على هذه الشروط.</p>
+        <ul className="list-disc ps-6 space-y-2">
+          <li>المحتوى للاستخدام الشخصي فقط.</li>
+          <li>يُمنع إساءة الاستخدام أو محاولة تعطيل الخدمة.</li>
+          <li>قد يتم تحديث الشروط من وقت لآخر.</li>
+        </ul>
+        <p>لو عندك استفسار عن الشروط تواصل معنا.</p>
+      </div>
     </main>
   );
 }
