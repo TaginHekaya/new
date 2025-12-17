@@ -187,7 +187,7 @@ export default function Header() {
   { name: 'Leagues', path: '/leagues' },
   { name: 'Teams', path: '/teams' },
   { name: 'Top Players', path: '/players' },
-  { name: 'Ai Analysisnalysis', path: '/analysis' },
+  { name: 'Ai Analysis 🤖', path: '/analysis' },
 ];
 
   return (
