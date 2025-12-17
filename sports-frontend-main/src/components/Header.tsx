@@ -180,20 +180,15 @@ export default function Header() {
   }
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Live', path: '/matches' },
-    { name: 'Today', path: '/today' },
-    { name: 'News', path: '/news' },
-    { name: 'Leagues', path: '/leagues' },
-    const navItems = [
+  { name: 'Home', path: '/' },
+  { name: 'Live', path: '/matches' },
+  { name: 'Today', path: '/today' },
+  { name: 'News', path: '/news' },
+  { name: 'Leagues', path: '/leagues' },
   { name: 'Teams', path: '/teams' },
   { name: 'Top Players', path: '/players' },
-
-  {
-    name: 'التحليلات',
-    path: '/analysis',
-  }
-  ];
+  { name: 'التحليلات', path: '/analysis' },
+];
 
   return (
     <> 
