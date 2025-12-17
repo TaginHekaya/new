@@ -187,6 +187,13 @@ export default function Header() {
     { name: 'Leagues', path: '/leagues' },
     { name: 'Teams', path: '/teams' },
     { name: 'Top Players', path: '/players' }
+// أضف في قائمة الـ menu items:
+{
+  name: 'التحليلات',
+  href: '/analysis',
+  icon: '🤖',
+  badge: 'AI'
+}
   ];
 
   return (
