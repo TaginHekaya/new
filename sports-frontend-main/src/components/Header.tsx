@@ -185,15 +185,14 @@ export default function Header() {
     { name: 'Today', path: '/today' },
     { name: 'News', path: '/news' },
     { name: 'Leagues', path: '/leagues' },
-    { name: 'Teams', path: '/teams' },
-    { name: 'Top Players', path: '/players' }
-// أضف في قائمة الـ menu items:
-{
-  name: 'التحليلات',
-  href: '/analysis',
-  icon: '🤖',
-  badge: 'AI'
-}
+    const navItems = [
+  { name: 'Teams', path: '/teams' },
+  { name: 'Top Players', path: '/players' },
+
+  {
+    name: 'التحليلات',
+    path: '/analysis',
+  }
   ];
 
   return (
