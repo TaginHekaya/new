@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 
 import "./globals.css";
+import "../styles/analysis.css"; // ⬅️ استيراد ملف Analysis CSS
 import FooterGate from "@/components/FooterGate";
 import AuthWrapper from "@/components/AuthWrapper";
 import { ThemeProvider } from "@/contexts/ThemeContext";
