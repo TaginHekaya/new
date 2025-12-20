@@ -246,12 +246,12 @@ export default function AnalysisDetailPage() {
 
   const data = analysis.analysis;
   const sections = [
-    { id: 'summary', icon: BarChart3, title: 'ملخص التحليل', content: data.fullText || data.summary },
-    { id: 'performance', icon: Activity, title: 'تحليل الأداء', data: data.performance },
-    { id: 'keyPlayers', icon: Star, title: 'اللاعبون المؤثرون', content: data.keyPlayers },
-    { id: 'tactics', icon: Target, title: 'التكتيكات', data: data.tactics },
-    { id: 'statistics', icon: TrendingUp, title: 'الإحصائيات', content: data.statistics },
-    { id: 'strengths', icon: Trophy, title: 'نقاط القوة والضعف', data: { strengths: data.strengths, weaknesses: data.weaknesses } }
+    { id: 'summary', icon: BarChart3, title: 'ملخص التحليل', content: data.fullText || data.summary, data: undefined },
+    { id: 'performance', icon: Activity, title: 'تحليل الأداء', content: undefined, data: data.performance },
+    { id: 'keyPlayers', icon: Star, title: 'اللاعبون المؤثرون', content: data.keyPlayers, data: undefined },
+    { id: 'tactics', icon: Target, title: 'التكتيكات', content: undefined, data: data.tactics },
+    { id: 'statistics', icon: TrendingUp, title: 'الإحصائيات', content: data.statistics, data: undefined },
+    { id: 'strengths', icon: Trophy, title: 'نقاط القوة والضعف', content: undefined, data: { strengths: data.strengths, weaknesses: data.weaknesses } }
   ];
 
   return (
@@ -529,7 +529,7 @@ export default function AnalysisDetailPage() {
                 exit={{ height: 0, opacity: 0 }}
                 className="mt-4 space-y-2 overflow-hidden"
               >
-                {sections.filter(s => s.content || s.data).map((section, i) => (
+                {sections.filter(s => s.content || (s.data && Object.keys(s.data).length > 0)).map((section, i) => (
                   <motion.a
                     key={section.id}
                     initial={{ x: -20, opacity: 0 }}
@@ -550,7 +550,8 @@ export default function AnalysisDetailPage() {
         {/* Analysis Sections */}
         <div className="space-y-6">
           {sections.map((section, index) => {
-            if (!section.content && !section.data) return null;
+            const hasContent = section.content || (section.data && Object.keys(section.data).length > 0);
+            if (!hasContent) return null;
 
             const isExpanded = expandedSections.has(section.id);
             const Icon = section.icon;
@@ -607,33 +608,33 @@ export default function AnalysisDetailPage() {
                         {/* Performance Section */}
                         {section.id === 'performance' && section.data && (
                           <div className="space-y-4">
-                            {section.data.homeTeam && (
+                            {(section.data as any).homeTeam && (
                               <div className="p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                                 <div className="flex items-center gap-2 mb-2">
                                   <Shield className="w-5 h-5 text-blue-400" />
                                   <h4 className="font-bold text-blue-400">أداء الفريق المضيف</h4>
                                 </div>
-                                <p className="text-gray-300">{section.data.homeTeam}</p>
+                                <p className="text-gray-300">{(section.data as any).homeTeam}</p>
                               </div>
                             )}
 
-                            {section.data.awayTeam && (
+                            {(section.data as any).awayTeam && (
                               <div className="p-4 bg-purple-500/10 rounded-xl border border-purple-500/20">
                                 <div className="flex items-center gap-2 mb-2">
                                   <Shield className="w-5 h-5 text-purple-400" />
                                   <h4 className="font-bold text-purple-400">أداء الفريق الضيف</h4>
                                 </div>
-                                <p className="text-gray-300">{section.data.awayTeam}</p>
+                                <p className="text-gray-300">{(section.data as any).awayTeam}</p>
                               </div>
                             )}
 
-                            {section.data.overall && (
+                            {(section.data as any).overall && (
                               <div className="p-4 bg-green-500/10 rounded-xl border border-green-500/20">
                                 <div className="flex items-center gap-2 mb-2">
                                   <Activity className="w-5 h-5 text-green-400" />
                                   <h4 className="font-bold text-green-400">التقييم العام</h4>
                                 </div>
-                                <p className="text-gray-300">{section.data.overall}</p>
+                                <p className="text-gray-300">{(section.data as any).overall}</p>
                               </div>
                             )}
                           </div>
@@ -651,33 +652,33 @@ export default function AnalysisDetailPage() {
                         {/* Tactics */}
                         {section.id === 'tactics' && section.data && (
                           <div className="space-y-4">
-                            {section.data.homeTeam && (
+                            {(section.data as any).homeTeam && (
                               <div className="p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                                 <div className="flex items-center gap-2 mb-2">
                                   <Target className="w-5 h-5 text-blue-400" />
                                   <h4 className="font-bold text-blue-400">تكتيك الفريق المضيف</h4>
                                 </div>
-                                <p className="text-gray-300">{section.data.homeTeam}</p>
+                                <p className="text-gray-300">{(section.data as any).homeTeam}</p>
                               </div>
                             )}
 
-                            {section.data.awayTeam && (
+                            {(section.data as any).awayTeam && (
                               <div className="p-4 bg-purple-500/10 rounded-xl border border-purple-500/20">
                                 <div className="flex items-center gap-2 mb-2">
                                   <Target className="w-5 h-5 text-purple-400" />
                                   <h4 className="font-bold text-purple-400">تكتيك الفريق الضيف</h4>
                                 </div>
-                                <p className="text-gray-300">{section.data.awayTeam}</p>
+                                <p className="text-gray-300">{(section.data as any).awayTeam}</p>
                               </div>
                             )}
 
-                            {section.data.comparison && (
+                            {(section.data as any).comparison && (
                               <div className="p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl border border-white/20">
                                 <div className="flex items-center gap-2 mb-2">
                                   <BarChart3 className="w-5 h-5 text-white" />
                                   <h4 className="font-bold text-white">المقارنة التكتيكية</h4>
                                 </div>
-                                <p className="text-gray-300">{section.data.comparison}</p>
+                                <p className="text-gray-300">{(section.data as any).comparison}</p>
                               </div>
                             )}
                           </div>
@@ -696,18 +697,18 @@ export default function AnalysisDetailPage() {
                         {section.id === 'strengths' && section.data && (
                           <div className="grid md:grid-cols-2 gap-4">
                             {/* Strengths */}
-                            {section.data.strengths && (
+                            {(section.data as any).strengths && (
                               <div className="space-y-3">
                                 <h4 className="font-bold text-green-400 text-xl mb-3 flex items-center gap-2">
                                   <CheckCircle className="w-5 h-5" />
                                   نقاط القوة
                                 </h4>
 
-                                {section.data.strengths.homeTeam && (
+                                {(section.data as any).strengths.homeTeam && (
                                   <div className="p-4 bg-green-500/10 rounded-xl border border-green-500/20">
                                     <p className="font-semibold text-white mb-2">الفريق المضيف:</p>
                                     <ul className="space-y-1">
-                                      {section.data.strengths.homeTeam.map((strength: string, i: number) => (
+                                      {(section.data as any).strengths.homeTeam.map((strength: string, i: number) => (
                                         <li key={i} className="text-gray-300 flex items-start gap-2">
                                           <span className="text-green-400 mt-1">✓</span>
                                           <span>{strength}</span>
@@ -717,11 +718,11 @@ export default function AnalysisDetailPage() {
                                   </div>
                                 )}
 
-                                {section.data.strengths.awayTeam && (
+                                {(section.data as any).strengths.awayTeam && (
                                   <div className="p-4 bg-green-500/10 rounded-xl border border-green-500/20">
                                     <p className="font-semibold text-white mb-2">الفريق الضيف:</p>
                                     <ul className="space-y-1">
-                                      {section.data.strengths.awayTeam.map((strength: string, i: number) => (
+                                      {(section.data as any).strengths.awayTeam.map((strength: string, i: number) => (
                                         <li key={i} className="text-gray-300 flex items-start gap-2">
                                           <span className="text-green-400 mt-1">✓</span>
                                           <span>{strength}</span>
@@ -734,18 +735,18 @@ export default function AnalysisDetailPage() {
                             )}
 
                             {/* Weaknesses */}
-                            {section.data.weaknesses && (
+                            {(section.data as any).weaknesses && (
                               <div className="space-y-3">
                                 <h4 className="font-bold text-red-400 text-xl mb-3 flex items-center gap-2">
                                   <XCircle className="w-5 h-5" />
                                   نقاط الضعف
                                 </h4>
 
-                                {section.data.weaknesses.homeTeam && (
+                                {(section.data as any).weaknesses.homeTeam && (
                                   <div className="p-4 bg-red-500/10 rounded-xl border border-red-500/20">
                                     <p className="font-semibold text-white mb-2">الفريق المضيف:</p>
                                     <ul className="space-y-1">
-                                      {section.data.weaknesses.homeTeam.map((weakness: string, i: number) => (
+                                      {(section.data as any).weaknesses.homeTeam.map((weakness: string, i: number) => (
                                         <li key={i} className="text-gray-300 flex items-start gap-2">
                                           <span className="text-red-400 mt-1">✗</span>
                                           <span>{weakness}</span>
@@ -755,11 +756,11 @@ export default function AnalysisDetailPage() {
                                   </div>
                                 )}
 
-                                {section.data.weaknesses.awayTeam && (
+                                {(section.data as any).weaknesses.awayTeam && (
                                   <div className="p-4 bg-red-500/10 rounded-xl border border-red-500/20">
                                     <p className="font-semibold text-white mb-2">الفريق الضيف:</p>
                                     <ul className="space-y-1">
-                                      {section.data.weaknesses.awayTeam.map((weakness: string, i: number) => (
+                                      {(section.data as any).weaknesses.awayTeam.map((weakness: string, i: number) => (
                                         <li key={i} className="text-gray-300 flex items-start gap-2">
                                           <span className="text-red-400 mt-1">✗</span>
                                           <span>{weakness}</span>
