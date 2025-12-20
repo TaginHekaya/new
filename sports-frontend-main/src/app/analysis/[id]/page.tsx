@@ -423,39 +423,39 @@ export default function AnalysisDetailPage() {
               </motion.div>
 
               {/* Score */}
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.4, type: "spring" }}
-                className="text-center"
-              >
-                <div className="w-full flex items-center justify-center">
-  <div className="flex items-center justify-center gap-10 text-7xl md:text-8xl font-black gradient-text-animated tracking-wide">
-      <span className="block w-20 text-center">{analysis.score.home}</span>
+<motion.div
+  initial={{ scale: 0 }}
+  animate={{ scale: 1 }}
+  transition={{ delay: 0.4, type: "spring" }}
+  className="text-center flex-1"
+>
+  <div className="w-full flex items-center justify-center">
+    <div className="flex items-center justify-center gap-6 text-5xl md:text-6xl font-extrabold gradient-text-animated tracking-wide">
+      <span className="block w-16 text-center">{analysis.score.home}</span>
       <span className="block w-10 text-center">-</span>
-      <span className="block w-20 text-center">{analysis.score.away}</span>
+      <span className="block w-16 text-center">{analysis.score.away}</span>
+    </div>
   </div>
-</div>
-<p className="text-xs text-gray-400 mt-3 text-center">النتيجة النهائية</p>
+  <p className="text-xs text-gray-400 mt-2 text-center">النتيجة النهائية</p>
+</motion.div>
 
-              {/* Away Team */}
-              <motion.div
-                initial={{ x: 50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-center flex-1 max-w-xs"
-              >
-                <motion.img
-                  whileHover={{ scale: 1.1, rotate: -5 }}
-                  src={analysis.awayTeam.logo}
-                  alt={analysis.awayTeam.name}
-                  className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-3 drop-shadow-2xl"
-                />
-                <h3 className="text-xl md:text-2xl font-bold text-white">{analysis.awayTeam.name}</h3>
-                <p className="text-sm text-gray-400 mt-1">الفريق الضيف</p>
-              </motion.div>
-            </div>
-
+{/* Away Team */}
+<motion.div
+  initial={{ x: 50, opacity: 0 }}
+  animate={{ x: 0, opacity: 1 }}
+  transition={{ delay: 0.3 }}
+  className="text-center flex-1 max-w-xs"
+>
+  <motion.img
+    whileHover={{ scale: 1.1, rotate: -5 }}
+    src={analysis.awayTeam.logo}
+    alt={analysis.awayTeam.name}
+    className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-3 drop-shadow-2xl"
+  />
+  <h3 className="text-xl md:text-2xl font-bold text-white">{analysis.awayTeam.name}</h3>
+  <p className="text-sm text-gray-400 mt-1">الفريق الضيف</p>
+</motion.div>
+              
             {/* Match Info */}
             <div className="flex flex-wrap items-center justify-center gap-4 mt-6 pt-6 border-t border-white/10">
               {analysis.venue && (
