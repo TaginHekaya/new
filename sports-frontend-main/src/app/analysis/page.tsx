@@ -191,8 +191,8 @@ export default function AnalysisPage() {
                 </p>
 
                 <p className="text-xs text-center text-yellow-400 mt-2">
-  {views || 0}
-</p>
+                  {a.views || 0}
+                </p>
               </div>
             </Link>
           ))}
@@ -209,4 +209,4 @@ export default function AnalysisPage() {
       </div>
     </div>
   );
-                                   }
+            }
