@@ -429,13 +429,14 @@ export default function AnalysisDetailPage() {
                 transition={{ delay: 0.4, type: "spring" }}
                 className="text-center"
               >
-                <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 backdrop-blur-sm px-8 py-4 rounded-2xl border border-white/20">
-                  <h1 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                    {analysis.score.home} - {analysis.score.away}
-                  </h1>
-                  <p className="text-xs text-gray-400 mt-2">النتيجة النهائية</p>
-                </div>
-              </motion.div>
+                <div className="w-full flex items-center justify-center">
+  <div className="flex items-center justify-center gap-10 text-7xl md:text-8xl font-black gradient-text-animated tracking-wide">
+      <span className="block w-20 text-center">{analysis.score.home}</span>
+      <span className="block w-10 text-center">-</span>
+      <span className="block w-20 text-center">{analysis.score.away}</span>
+  </div>
+</div>
+<p className="text-xs text-gray-400 mt-3 text-center">النتيجة النهائية</p>
 
               {/* Away Team */}
               <motion.div
