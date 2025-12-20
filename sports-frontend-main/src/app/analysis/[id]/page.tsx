@@ -404,82 +404,85 @@ export default function AnalysisDetailPage() {
             </motion.div>
 
             {/* Teams & Score */}
-            <div className="flex items-center justify-center gap-8 mb-6">
+            <div className="flex items-center justify-center gap-6 md:gap-8 mb-6">
               {/* Home Team */}
               <motion.div
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="text-center flex-1 max-w-xs"
+                className="text-center flex-1 max-w-[140px]"
               >
                 <motion.img
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   src={analysis.homeTeam.logo}
                   alt={analysis.homeTeam.name}
-                  className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-3 drop-shadow-2xl"
+                  className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-2 drop-shadow-2xl"
                 />
-                <h3 className="text-xl md:text-2xl font-bold text-white">{analysis.homeTeam.name}</h3>
-                <p className="text-sm text-gray-400 mt-1">الفريق المضيف</p>
+                <h3 className="text-base md:text-lg font-bold text-white leading-tight">{analysis.homeTeam.name}</h3>
+                <p className="text-xs text-gray-400 mt-1">الفريق المضيف</p>
               </motion.div>
 
-          {/* Score + Away Team inside the main flex */}
-<div className="flex items-center justify-center w-full gap-6 my-6">
+              {/* Score - Compact Horizontal */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.4, type: "spring" }}
+                className="flex flex-col items-center justify-center"
+              >
+                <div className="bg-gradient-to-br from-blue-600/30 to-purple-600/30 backdrop-blur-sm px-6 py-3 rounded-2xl border border-white/20 shadow-lg">
+                  <div className="flex items-center justify-center gap-3">
+                    <span className="text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-400 to-blue-300 bg-clip-text text-transparent">
+                      {analysis.score.home}
+                    </span>
+                    <span className="text-2xl md:text-3xl font-bold text-white/50">-</span>
+                    <span className="text-4xl md:text-5xl font-black bg-gradient-to-r from-purple-400 to-purple-300 bg-clip-text text-transparent">
+                      {analysis.score.away}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-400 mt-2">النتيجة النهائية</p>
+              </motion.div>
 
-  {/* Score */}
-  <motion.div
-    initial={{ scale: 0 }}
-    animate={{ scale: 1 }}
-    transition={{ delay: 0.4, type: "spring" }}
-    className="text-center"
-  >
-    <div className="w-full flex items-center justify-center">
-      <div className="flex items-center justify-center gap-6 text-6xl md:text-7xl font-black gradient-text-animated tracking-wide">
-        <span className="block w-16 text-center">{analysis.score.home}</span>
-        <span className="block w-10 text-center">-</span>
-        <span className="block w-16 text-center">{analysis.score.away}</span>
-      </div>
-    </div>
-    <p className="text-xs text-gray-400 mt-2 text-center">النتيجة النهائية</p>
-  </motion.div>
+              {/* Away Team */}
+              <motion.div
+                initial={{ x: 50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="text-center flex-1 max-w-[140px]"
+              >
+                <motion.img
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                  src={analysis.awayTeam.logo}
+                  alt={analysis.awayTeam.name}
+                  className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-2 drop-shadow-2xl"
+                />
+                <h3 className="text-base md:text-lg font-bold text-white leading-tight">{analysis.awayTeam.name}</h3>
+                <p className="text-xs text-gray-400 mt-1">الفريق الضيف</p>
+              </motion.div>
+            </div>
 
-  {/* Away Team */}
-  <motion.div
-    initial={{ x: 50, opacity: 0 }}
-    animate={{ x: 0, opacity: 1 }}
-    transition={{ delay: 0.3 }}
-    className="text-center flex-1 max-w-xs"
-  >
-    <motion.img
-      whileHover={{ scale: 1.1, rotate: -5 }}
-      src={analysis.awayTeam.logo}
-      alt={analysis.awayTeam.name}
-      className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-3 drop-shadow-2xl"
-    />
-    <h3 className="text-xl md:text-2xl font-bold text-white">{analysis.awayTeam.name}</h3>
-    <p className="text-sm text-gray-400 mt-1">الفريق الضيف</p>
-  </motion.div>
+            {/* Match Info */}
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-6 pt-6 border-t border-white/10">
+              {analysis.venue && (
+                <div className="flex items-center gap-2 text-gray-300">
+                  <MapPin className="w-4 h-4" />
+                  <span className="text-sm">{analysis.venue}</span>
+                </div>
+              )}
+              
+              <div className="flex items-center gap-2 text-gray-300">
+                <Clock className="w-4 h-4" />
+                <span className="text-sm">{getTimeAgo(analysis.createdAt)}</span>
+              </div>
 
-</div>
+              <div className="flex items-center gap-2 text-green-400">
+                <Sparkles className="w-4 h-4" />
+                <span className="text-sm font-semibold">تحليل حصري</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
-{/* Match Info */}
-<div className="flex flex-wrap items-center justify-center gap-4 mt-6 pt-6 border-t border-white/10">
-  {analysis.venue && (
-    <div className="flex items-center gap-2 text-gray-300">
-      <MapPin className="w-4 h-4" />
-      <span className="text-sm">{analysis.venue}</span>
-    </div>
-  )}
-
-  <div className="flex items-center gap-2 text-gray-300">
-    <Clock className="w-4 h-4" />
-    <span className="text-sm">{getTimeAgo(analysis.createdAt)}</span>
-  </div>
-
-  <div className="flex items-center gap-2 text-green-400">
-    <Sparkles className="w-4 h-4" />
-    <span className="text-sm font-semibold">تحليل حصري</span>
-  </div>
-</div>
         {/* Stats Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
