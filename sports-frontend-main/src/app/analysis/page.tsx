@@ -190,9 +190,9 @@ export default function AnalysisPage() {
                   {formatDate(a.createdAt)}
                 </p>
 
-                <p classname="text-xs text-center text-yellow-400 mt-2">
-                  👁 {a.views || 0}
-                </p>
+                <p className="text-xs text-center text-yellow-400 mt-2">
+  {views || 0}
+</p>
               </div>
             </Link>
           ))}
