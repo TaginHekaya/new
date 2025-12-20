@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.mal3abak.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.mal3abak/api.com';
 
 interface Analysis {
   _id: string;
