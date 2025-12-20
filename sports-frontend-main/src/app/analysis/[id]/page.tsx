@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "https://api.mal3abak.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.mal3abak.com';
 
 interface Analysis {
   _id: string;
