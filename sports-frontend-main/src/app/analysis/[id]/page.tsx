@@ -62,43 +62,65 @@ export default function AnalysisDetailPage() {
   }, [params.id]);
 
   const fetchAnalysis = async (matchId: string) => {
-    try {
-      setLoading(true);
-      setError('');
-      
-      const url = `${API_URL}/api/analysis/${matchId}`;
-      console.log('🔍 Fetching analysis:', url);
-      
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        cache: 'no-store'
-      });
+  try {
+    setLoading(true);
+    setError('');
+    
+    const url = `${API_URL}/api/analysis/${matchId}`;
+    console.log('🔍 Fetching analysis:', url);
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store'
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.message || `خطأ ${response.status}: ${response.statusText}`
-        );
-      }
-
-      const data = await response.json();
-      
-      if (!data.success || !data.data) {
-        throw new Error(data.message || 'التحليل غير موجود');
-      }
-
-      setAnalysis(data.data);
-    } catch (err: any) {
-      console.error('❌ Fetch error:', err);
-      setError(err.message || 'حدث خطأ في تحميل التحليل');
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        errorData.message || `خطأ ${response.status}: ${response.statusText}`
+      );
     }
-  };
 
+    const result = await response.json();
+    
+    if (!result.success || !result.data) {
+      throw new Error(result.message || 'التحليل غير موجود');
+    }
+
+    const d = result.data;
+
+    // 🟢 Parse score
+    let scoreA = 0;
+    let scoreB = 0;
+
+    if (d.score && typeof d.score === 'string') {
+      const s = d.score.split('-');
+      scoreA = Number(s[0].trim());
+      scoreB = Number(s[1].trim());
+    }
+
+    // 🟢 Normalize expected frontend fields
+    const normalized = {
+      ...d,
+      scoreA,
+      scoreB,
+      homeTeamLogo: d.homeTeamLogo || d.homeTeam?.logo || '',
+      awayTeamLogo: d.awayTeamLogo || d.awayTeam?.logo || '',
+      tournamentLogo: d.tournamentLogo || d.tournament?.logo || '',
+    };
+
+    setAnalysis(normalized);
+
+  } catch (err: any) {
+    console.error('❌ Fetch error:', err);
+    setError(err.message || 'حدث خطأ في تحميل التحليل');
+  } finally {
+    setLoading(false);
+  }
+};
   const handleShare = async () => {
     if (!analysis) return;
     
