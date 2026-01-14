@@ -1,4 +1,4 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:5050";
+export const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://mal3abak.com/api";
 
 export async function apiFetch<T = any>(path: string, options: RequestInit = {}, token?: string): Promise<T> {
   const headers: Record<string, string> = {
